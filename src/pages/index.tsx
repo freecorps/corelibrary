@@ -1,4 +1,4 @@
-import { api } from '../../src/appwrite/appwrite'
+import { api } from './api/appwrite'
 
 import React from 'react';
 import {

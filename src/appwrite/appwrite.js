@@ -1,4 +1,4 @@
-import { Appwrite } from "appwrite";
+import { Appwrite } from "node-appwrite";
 
 var appwrite = new Appwrite();
 

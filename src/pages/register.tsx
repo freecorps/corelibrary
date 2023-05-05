@@ -1,5 +1,3 @@
-import { api } from '../../src/appwrite/appwrite'
-
 import React from 'react';
 import {
   Card,
@@ -11,29 +9,11 @@ import {
   Checkbox,
   Container,
 } from '@nextui-org/react';
-import { FcGoogle } from 'react-icons/fc';
-import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 export default function Login() {
   // Adicione funções para lidar com o login de cada provedor
-  const handleGoogleLogin = async () => {
-    // Lógica de login com o Google
-    try {
-      await api.loginWithGoogle();
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
 
-  const handleDiscordLogin = () => {
-    
-  };
-
-  const handleGithubLogin = () => {
-    // Lógica de login com o GitHub
-  };
-
-  const handleNormalLogin = () => {
+  const handleRegister = () => {
     // Lógica de login normal
 
   }
@@ -103,34 +83,24 @@ export default function Login() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Password"
+            placeholder="Senha"
             type="password"
             id='password'
             css={{ mb: '6px' }}
           />
-          <Row justify="space-between">
-            <Checkbox>
-              <Text size={14}>Lembrar conta</Text>
-            </Checkbox>
-            <Text size={14}>Esqueceu a senha?</Text>
-          </Row>
-          <Spacer y={1} />
-          <Button>Sign in</Button>
+          <Input
+            clearable
+            underlined
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Confirme sua senha"
+            type="password"
+            id='password'
+            css={{ mb: '6px' }}
+          />
           <Spacer y={0.5} />
-          <Text size={14} css={{textAlign: 'center'}}>Já tem uma conta?</Text>
-          <Spacer y={0.5} />
-          <Button auto onPress={handleNormalLogin}>Login</Button>
-          <Spacer y={0.5} />
-          <Text size={16} css={{ textAlign: 'center', marginBottom: '1rem' }}>
-            Ou entre com
-          </Text>
-          <Row justify="center">
-            <Button auto onPress={handleGoogleLogin} icon={<FcGoogle />} aria-labelledby='Botão login Google'/>
-            <Spacer x={0.5} />
-            <Button auto onPress={handleDiscordLogin} icon={<FaDiscord />} aria-labelledby='Botão login Discrod'/>
-            <Spacer x={0.5} />
-            <Button auto onPress={handleGithubLogin} icon={<FaGithub />} aria-labelledby='Botão login Github'/>
-          </Row>
+          <Button auto onPress={handleRegister}>Registrar</Button>
         </Card>
       </Container>
     </div>

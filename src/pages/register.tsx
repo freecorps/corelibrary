@@ -1,3 +1,5 @@
+import { api } from './api/appwrite'
+
 import React from 'react';
 import {
   Card,
@@ -10,12 +12,40 @@ import {
   Container,
 } from '@nextui-org/react';
 
-export default function Login() {
+export default function Register() {
   // Adicione funções para lidar com o login de cada provedor
 
   const handleRegister = () => {
-    // Lógica de login normal
-
+    //get email and password
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+    //check if password is valid and long enough
+    if(password.length < 6){
+      alert('Senha deve ter no mínimo 6 caracteres');
+      return;
+    }
+    //check if passwords match
+    if(password !== confirmPassword){
+      alert('Senhas não coincidem');
+      return;
+    }
+    //checar se é email ou ra
+    if(email.includes('@')){
+      //check if email is valid whit regex
+      const emailRegex = /\S+@\S+\.\S+/;
+      if(!emailRegex.test(email)){
+        alert('Email inválido');
+        return;
+      }
+      api.normalRegister(email, password);
+    } else {
+      const raRegex = /^[0-9]{9}$/;
+      if(!raRegex.test(email)){
+        alert('RA inválido');
+        return;
+      }
+    }
   }
 
   return (
@@ -76,7 +106,7 @@ export default function Login() {
             placeholder="Email/RA"
             id='email'
           />
-          <Spacer y={1} />
+          <Spacer y={0.5} />
           <Input
             clearable
             underlined
@@ -96,7 +126,7 @@ export default function Login() {
             size="lg"
             placeholder="Confirme sua senha"
             type="password"
-            id='password'
+            id='confirmPassword'
             css={{ mb: '6px' }}
           />
           <Spacer y={0.5} />

@@ -5,6 +5,35 @@ const client = new Client()
     .setProject('643e97095e9289cb37d5');
 
 export const api = {
+
+    normalRegister: async (email: string, password: string) => {
+        try {
+            const account = new Account(client);
+            const promise = account.create('unique()', email, password);
+            return promise.then(function (response: any) {
+                return response; // Success
+            }, function (error: any) {
+                throw error; // Failure
+            });
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    normalLogin: async (email: string, password: string) => {
+        try {
+            const account = new Account(client);
+            const promise = account.createEmailSession(email, password);
+            return promise.then(function (response: any) {
+                return response; // Success
+            }, function (error: any) {
+                throw error; // Failure
+            });
+        } catch (error) {
+            throw error;
+        }
+    },
+
     loginWithGoogle: async () => {
         try {
             const account = new Account(client);

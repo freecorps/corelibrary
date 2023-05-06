@@ -43,9 +43,10 @@ export default function Login() {
     }
   };
 
-  const handleNormalLogin = () => {
-    // Lógica de login normal
-
+  const handleNormalLogin = async () => {
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    await api.normalLogin(email, password);
   }
 
   return (

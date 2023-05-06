@@ -15,6 +15,26 @@ export const api = {
         }
     },
 
+    loginWithGithub: async () => {
+        try {
+            const account = new Account(client);
+            account.createOAuth2Session('github', 'https://corelibrary.vercel.app', 'https://corelibrary.vercel.app');
+            console.log(account);
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    loginWithDiscord: async () => {
+        try {
+            const account = new Account(client);
+            account.createOAuth2Session('discord', 'https://corelibrary.vercel.app', 'https://corelibrary.vercel.app');
+            console.log(account);
+        } catch (error) {
+            throw error;
+        }
+    },
+
     getCurrentUser: async () => {
         const account = new Account(client);
         let promise = account.get();

@@ -25,12 +25,22 @@ export default function Login() {
     }
   };
 
-  const handleDiscordLogin = () => {
-    
+  const handleDiscordLogin = async () => {
+    try {
+      await api.loginWithDiscord();
+    }
+    catch (error: any) {
+      console.log(error.message);
+    }
   };
 
-  const handleGithubLogin = () => {
-    // Lógica de login com o GitHub
+  const handleGithubLogin = async () => {
+    try {
+      await api.loginWithGithub();
+    }
+    catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const handleNormalLogin = () => {

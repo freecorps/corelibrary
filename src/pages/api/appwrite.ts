@@ -8,7 +8,7 @@ export const api = {
     loginWithGoogle: async () => {
         try {
             const account = new Account(client);
-            account.createOAuth2Session('google', 'localhost:3000/', 'localhost:3000/');
+            account.createOAuth2Session('google', 'https://corelibrary.vercel.app', 'https://corelibrary.vercel.app');
             console.log(account);
         } catch (error) {
             throw error;

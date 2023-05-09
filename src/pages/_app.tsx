@@ -3,7 +3,14 @@ import type { AppProps } from 'next/app';
 import { NextUIProvider, createTheme, Text } from '@nextui-org/react';
 import '../styles/background.css'
 
-const darkTheme = createTheme({type: "dark"});
+const darkTheme = createTheme({
+  type: "dark",
+  theme: {
+    colors: {
+      
+    },
+  }
+});
 const lightTheme = createTheme({type: "light"});
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -1,4 +1,5 @@
 import { api } from './api/appwrite'
+import { redirect } from 'next/navigation';
 
 import React from 'react';
 import {
@@ -126,7 +127,7 @@ export default function Login() {
             <Text size={14}>Esqueceu a senha?</Text>
           </Row>
           <Spacer y={1} />
-          <Button>Sign in</Button>
+          <Button auto onPress={redirect("/register")}>Sign in</Button>
           <Spacer y={0.5} />
           <Text size={14} css={{textAlign: 'center'}}>Já tem uma conta?</Text>
           <Spacer y={0.5} />

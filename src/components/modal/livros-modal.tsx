@@ -26,22 +26,46 @@ export default function LivroModal() {
           </Text>
         </Modal.Header>
         <Modal.Body>
-          <Input
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Titulo"
-          />
-          <Input
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="lg"
-            placeholder="Resumo"
-          />
+        <Input
+                        clearable
+                        bordered
+                        fullWidth
+                        color="primary"
+                        size="lg"
+                        placeholder="Titulo"
+                    />
+                    <Input
+                        clearable
+                        bordered
+                        fullWidth
+                        color="primary"
+                        size="lg"
+                        placeholder="Autor"
+                    />
+                    <Input
+                        clearable
+                        bordered
+                        fullWidth
+                        color="primary"
+                        size="lg"
+                        placeholder="Resumo"
+                    />
+                    <Input
+                        clearable
+                        bordered
+                        fullWidth
+                        color="primary"
+                        size="lg"
+                        placeholder="Quantidade"
+                    />
+                    <Input
+                        clearable
+                        bordered
+                        fullWidth
+                        color="primary"
+                        size="lg"
+                        placeholder="livro"
+                    />
         </Modal.Body>
         <Modal.Footer>
           <Button auto flat color="error" onPress={closeHandler}>

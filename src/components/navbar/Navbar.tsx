@@ -107,7 +107,7 @@ export const NavbarWrapper = ({ children }: Props) => {
                </Navbar.Content>
                <Navbar.Content>
                   <Link
-                     href="https://github.com/Siumauricio/nextui-dashboard-template"
+                     href="https://github.com/freecorps"
                      target={'_blank'}
                   >
                      <GithubIcon />

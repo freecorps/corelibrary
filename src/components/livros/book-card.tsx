@@ -3,26 +3,24 @@ import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 import CardModal from '../modal/card-modal';
 
 interface BookCardProps {
-   title: string;
-   subtitle: string;
+   title: string, 
+   author: string, 
+   resume: string, 
+   quantity: number, 
+   imageUrl: string
 }
 
-export const BookCard: React.FC<BookCardProps> = ({ title, subtitle }) => {
+export const BookCard: React.FC<BookCardProps> = ({ title, author, quantity, imageUrl }) => {
    return (
       <Card
          css={{
             '@media (max-width: 600px)': {
                maxWidth: '90%',
-               padding: '0 5%',
             },
             '@media (min-width: 601px)': {
                maxWidth: '80%',
-               padding: '0 10%',
             },
-            // Continue ajustando para outros breakpoints conforme necessário
-            bg: '$blue600',
             borderRadius: '$xl',
-            px: '$6',
          }}
       >
          <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
@@ -30,18 +28,17 @@ export const BookCard: React.FC<BookCardProps> = ({ title, subtitle }) => {
                <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
                   New
                </Text>
-               <Text h3 color="black">
-                  Acme camera
+               <Text h3 color="white">
+                  {title}
                </Text>
             </Col>
          </Card.Header>
          <Card.Body css={{ p: 0 }}>
             <Card.Image
-               src="https://nextui.org/images/card-example-6.jpeg"
+               src={imageUrl}
                width="100%"
                height="100%"
-               objectFit="cover"
-               alt="Card example background"
+               objectFit="fill"
             />
          </Card.Body>
          <Card.Footer
@@ -58,10 +55,10 @@ export const BookCard: React.FC<BookCardProps> = ({ title, subtitle }) => {
             <Row>
                <Col>
                   <Text color="#000" size={'auto'}>
-                     Available soon.
+                     {title}
                   </Text>
                   <Text color="#000" size={'auto'}>
-                     Get notified.
+                     {author} - {quantity} unid.
                   </Text>
                </Col>
                <Col>

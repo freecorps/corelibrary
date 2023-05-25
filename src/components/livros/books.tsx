@@ -7,30 +7,13 @@ interface Book {
   subtitle: string;
 }
 
-const books = true;
-
-const bookList: Book[] = [
-  {
-    title: "Auto Insurance",
-    subtitle: "1311 Cars",
-  },
-  {
-    title: "Home Insurance",
-    subtitle: "900 Houses",
-  },
-  {
-    title: "Travel Insurance",
-    subtitle: "200 Trips",
-  },
-];
-
-export default function BookGrid() {
-  return CheckBook();
+export default function BookGrid(books?: Book[]) {
+  return CheckBook(books);
 }
 
-function CheckBook() {
+function CheckBook(books?: Book[]) {
   if (books) {
-    return ShowBook(bookList);
+    return ShowBook(books);
   } else {
     return ShowPlaceholder();
   }
@@ -40,7 +23,7 @@ function ShowBook(Books: Book[]) {
   return (
     <Grid.Container gap={2} justify="center">
       {Books.map((book, index) => (
-        <Grid key={index} xs={4}>
+        <Grid key={index} xs={2}>
           <BookCard title={book.title} subtitle={book.subtitle} />
         </Grid>
       ))}

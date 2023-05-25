@@ -9,23 +9,15 @@ interface Book {
 
 const bookList: Book[] = [
     {
-      title: "Auto Insurance Auto Insurance Auto Insurance Auto Insurance Auto Insurance",
-      subtitle: "1311 Cars",
+        title: "Auto Insurance Auto Insurance Auto Insurance Auto Insurance Auto Insurance",
+        subtitle: "1311 Cars",
     },
     {
-      title: "Home Insurance",
-      subtitle: "900 Houses",
+        title: "Home Insurance",
+        subtitle: "900 Houses",
     },
     {
-      title: "Travel Insurance",
-      subtitle: "200 Trips",
-    },
-    {
-        title: "Health Insurance",
-        subtitle: "200 Trips",
-    },
-    {
-        title: "Life Insurance",
+        title: "Travel Insurance",
         subtitle: "200 Trips",
     },
     {
@@ -52,7 +44,15 @@ const bookList: Book[] = [
         title: "Life Insurance",
         subtitle: "200 Trips",
     },
-    
+    {
+        title: "Health Insurance",
+        subtitle: "200 Trips",
+    },
+    {
+        title: "Life Insurance",
+        subtitle: "200 Trips",
+    },
+
 ];
 
 export const Content = () => (

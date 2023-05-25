@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
 
-export default function SubmitModal() {
+export default function LivroModal() {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
   const closeHandler = () => {
@@ -11,7 +11,7 @@ export default function SubmitModal() {
   return (
     <div>
       <Button auto color="warning" shadow onPress={handler}>
-        Open modal
+        + Livros
       </Button>
       <Modal
         closeButton

@@ -1,18 +1,18 @@
-import {Input, Link, Navbar, Text} from '@nextui-org/react';
+import { Input, Link, Navbar, Text } from '@nextui-org/react';
 import React from 'react';
-import {GithubIcon} from '../icons/navbar/github-icon';
-import {SearchIcon} from '../icons/search-icon';
-import {Box} from '../styles/box';
-import {Flex} from '../styles/flex';
-import {NotificationsDropdown} from './notifications-dropdown';
-import {UserDropdown} from './user-dropdown';
-import SubmitModal from '../modal/submit-modal';
+import { GithubIcon } from '../icons/navbar/github-icon';
+import { SearchIcon } from '../icons/search-icon';
+import { Box } from '../styles/box';
+import { NotificationsDropdown } from './notifications-dropdown';
+import { BookerDropdown } from './booker-dropdown';
+import LivroModal from '../modal/livros-modal';
+import UserModal from '../modal/users-modal';
 
 interface Props {
    children: React.ReactNode;
 }
 
-export const NavbarWrapper = ({children}: Props) => {
+export const NavbarWrapper = ({ children }: Props) => {
    const collapseItems = [
       'Profile',
       'Dashboard',
@@ -58,9 +58,16 @@ export const NavbarWrapper = ({children}: Props) => {
             }}
          >
             <Navbar.Content
-               hideIn={'md'}
                css={{
                   width: '100%',
+                  '@media (max-width: 600px)': {
+                     width: '90%',
+                     padding: '0 5%',
+                  },
+                  '@media (min-width: 601px)': {
+                     width: '80%',
+                     padding: '0 10%',
+                  },
                }}
             >
                <Input
@@ -90,7 +97,8 @@ export const NavbarWrapper = ({children}: Props) => {
             </Navbar.Content>
             <Navbar.Content>
                <Navbar.Content>
-                  <SubmitModal />
+                  <LivroModal />
+                  <UserModal />
                </Navbar.Content>
             </Navbar.Content>
             <Navbar.Content>
@@ -106,7 +114,7 @@ export const NavbarWrapper = ({children}: Props) => {
                   </Link>
                </Navbar.Content>
                <Navbar.Content>
-                  <UserDropdown />
+                  <BookerDropdown />
                </Navbar.Content>
             </Navbar.Content>
 

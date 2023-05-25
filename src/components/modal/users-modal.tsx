@@ -1,42 +1,42 @@
-import { Modal, useModal, Button, Text } from "@nextui-org/react";
+import React from "react";
+import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
+import { AccountTable } from "../accounts/accounts-table";
 
 export default function UserModal() {
-  const { setVisible, bindings } = useModal();
+  const [visible, setVisible] = React.useState(false);
+  const handler = () => setVisible(true);
+  const closeHandler = () => {
+    setVisible(false);
+    console.log("closed");
+  };
   return (
     <div>
-      <Button auto shadow color="warning" onPress={() => setVisible(true)}>
+      <Button auto color="warning" shadow onPress={handler}>
         Usuarios
       </Button>
-      <Modal
+      <Modal css={{
+            '& .nextui-table-container': {
+               boxShadow: 'none',
+            },
+         }}
         scroll
-        width="600px"
+        width="50%"
+        closeButton
+        blur
         aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        {...bindings}
+        open={visible}
+        onClose={closeHandler}
       >
         <Modal.Header>
-          <Text id="modal-title" size={18}>
-            Modal with a lot of content
-          </Text>
+          <AccountTable />
         </Modal.Header>
-        <Modal.Body>
-          <Text id="modal-description">
-            ctetur
-            purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-            egestas eget quam. Morbi leo risus, porta ac consectetur ac,
-            vestibulum at eros. Praesent commodo cursus magna, vel scelerisque
-            nisl consectetur et.
-          </Text>
-        </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onPress={() => setVisible(false)}>
+          <Button auto flat color="error" onPress={closeHandler}>
             Close
-          </Button>
-          <Button auto onPress={() => setVisible(false)}>
-            Agree
           </Button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 }
+

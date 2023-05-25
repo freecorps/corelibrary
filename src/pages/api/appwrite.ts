@@ -4,8 +4,25 @@ const client = new Client()
     .setEndpoint('https://api.freecorps.xyz/v1')
     .setProject('643e97095e9289cb37d5');
 
-const linkSucess = "localhost:3000/home"
-const linkFailure = "localhost:3000"
+let url;
+switch(process.env.REACT_APP_ENV) {
+    case 'dev':
+    url = 'https://corelibrary.vercel.app';
+        break;
+    case 'prod':
+        url = 'https://corelibrary.freecorps.xyz';
+        break;
+    default:
+        url = 'http://localhost:3000';
+    break;
+}
+
+console.log(process.env.REACT_APP_ENV);
+
+console.log(url);
+
+const linkSucess = url+"/home"
+const linkFailure = url
 
 export const api = {
 
@@ -114,6 +131,5 @@ export const api = {
         }, function (error: any) {
             console.log(error); // Failure
         });
-
     },
 }

@@ -3,12 +3,12 @@ import { NavbarWrapper } from "../components/navbar/Navbar";
 import { Content } from "../components/home/content";
 
 export default function Home() {
-   return (
-     <>
-       <NavbarWrapper children={undefined}/>
-        <Container>
-            <Content/>
-        </Container>
-     </>
-   );
- }
+  return (
+    <>
+      <NavbarWrapper />
+      <Container>
+        <Content />
+      </Container>
+    </>
+  );
+}

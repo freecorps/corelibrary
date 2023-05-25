@@ -17,9 +17,9 @@ export default function Home() {
         } else {
           // Se o usuário estiver logado, verificar se é um bibliotecário
           const isLibrarian = await api.checkIfUserIsLibrarian();
-          if (!isLibrarian) {
+          if (isLibrarian) {
             // Se o usuário for um bibliotecário, redirecioná-lo para a página do bibliotecário
-            router.push('/home');
+            router.push('/home1');
           } else {
             // Se o usuário for um usuário comum, mantê-lo nesta página
           }

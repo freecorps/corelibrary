@@ -1,4 +1,4 @@
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID, Databases } from "appwrite";
 
 const client = new Client()
     .setEndpoint('https://api.freecorps.xyz/v1')
@@ -24,7 +24,63 @@ console.log(url);
 const linkSucess = url+"/home"
 const linkFailure = url
 
+const database = new Databases(client);
+
 export const api = {
+
+    addBook: async (title: string, author: string, resume: string, quantity: number, imageUrl: string): Promise<{id: string}> => {
+        try {
+            // O ID da coleção onde os livros estão armazenados
+            const collectionId = "646fd1d3caab68aced07"
+            const databaseId = "646fd1c7b295932a9b1b"
+            // Fazendo a requisição para criar um novo documento (livro)
+            const response = await database.createDocument(databaseId, collectionId, ID.unique(), {
+                title: title,
+                author: author,
+                resume: resume,
+                quantity: quantity,
+                imageUrl: imageUrl,
+            });
+            // Retornando o ID do novo livro
+            return { id: response.$id };
+        } catch (error) {
+            console.error(error); // Imprime o erro no console
+            throw error; // Lança o erro para ser tratado posteriormente
+        }
+    },
+
+    getAvailableBooks: async (): Promise<Array<{title: string, autor:string, resume:string, quantity: number, id: string, imageUrl: string}>> => {
+        try {
+            // O ID da coleção onde os livros estão armazenados
+            const collectionId = "646fd1d3caab68aced07"
+            const databaseId = "646fd1c7b295932a9b1b"
+            // Fazendo a requisição para buscar os documentos (livros)
+            const response = await database.listDocuments(databaseId, collectionId);
+            
+            // Verificando se a resposta contém documentos
+            if (response.documents && response.documents.length > 0) {
+                // Transformando os documentos em um array de livros
+                const books = response.documents.map((doc) => {
+                    return {
+                        resume: doc["resume"],
+                        autor: doc["autor"],
+                        title: doc["title"],
+                        quantity: doc["quantity"],
+                        id: doc["$id"],
+                        imageUrl: doc["imageUrl"],
+                    };
+                });
+                console.log(books);
+                return books;
+            } else {
+                // Se não houver livros disponíveis, retorna um array vazio
+                return [];
+            }
+        } catch (error) {
+            console.error(error); // Imprime o erro no console
+            throw error; // Lança o erro para ser tratado posteriormente
+        }
+    },
 
     setUserAsLibrarian: async (): Promise<boolean> => {
         try {

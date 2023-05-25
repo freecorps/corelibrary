@@ -1,5 +1,8 @@
 import { api } from './api/appwrite'
 
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import React from 'react';
 import {
   Card,
@@ -15,7 +18,26 @@ import {
 export default function Register() {
   // Adicione funções para lidar com o login de cada provedor
 
-  const handleRegister = () => {
+  const router = useRouter()
+
+  const checkUser = async () => {
+    const userId = await api.getCurrentUser();
+    if (userId) {
+        // Aqui, você pode fazer uma verificação adicional para determinar se o usuário é um bibliotecário ou não
+        const isLibrarian = await api.checkIfUserIsLibrarian();
+        if (isLibrarian) {
+            router.push('/home')
+        } else {
+            router.push('/home1')
+        }
+    }
+  }
+
+  useEffect(() => {
+      checkUser()
+  }, [])
+
+  const handleRegister = async () => {
     //get email and password
     const email = (document.getElementById('email') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
@@ -38,16 +60,24 @@ export default function Register() {
         alert('Email inválido');
         return;
       }
-      api.normalRegister(email, password);
+      const response = await api.normalRegister(email, password);
+      if (response) {
+        // Registro bem-sucedido, redirecione o usuário
+        checkUser();
+      }
     } else {
       const raRegex = /^[0-9]{9}$/;
       if(!raRegex.test(email)){
         alert('RA inválido');
         return;
       }
+      const response = await api.normalRegister(email, password);
+      if (response) {
+        // Registro bem-sucedido, redirecione o usuário
+        checkUser();
+      }
     }
   }
-
   return (
     <div>
       <div className="background">

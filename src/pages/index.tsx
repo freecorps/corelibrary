@@ -1,5 +1,8 @@
 import { api } from './api/appwrite'
 
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import React from 'react';
 import {
   Card,
@@ -15,6 +18,26 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 export default function Login() {
+
+  const router = useRouter()
+
+  const checkUser = async () => {
+    const userId = await api.getCurrentUser();
+    if (userId) {
+        // Aqui, você pode fazer uma verificação adicional para determinar se o usuário é um bibliotecário ou não
+        const isLibrarian = await api.checkIfUserIsLibrarian();
+        if (isLibrarian) {
+            router.push('/home')
+        } else {
+            router.push('/home1')
+        }
+    }
+  }
+
+  useEffect(() => {
+      checkUser()
+  }, [])
+
   // Adicione funções para lidar com o login de cada provedor
   const handleGoogleLogin = async () => {
     // Lógica de login com o Google
@@ -46,7 +69,11 @@ export default function Login() {
   const handleNormalLogin = async () => {
     const email = (document.getElementById('email') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-    await api.normalLogin(email, password);
+    const response = await api.normalLogin(email, password);
+    if (response) {
+      // Login bem-sucedido, redirecione o usuário
+      checkUser();
+    }
   }
 
   return (

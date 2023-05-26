@@ -1,21 +1,25 @@
 import React from "react";
-import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
+import { Modal, Input, Row, Checkbox, Button, Text, Loading } from "@nextui-org/react";
 import { api } from "../../pages/api/appwrite";
+import { useRouter } from 'next/router'
 
 export default function LivroModal() {
+  const router = useRouter();
   const [visible, setVisible] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [author, setAuthor] = React.useState("");
   const [summary, setSummary] = React.useState("");
   const [quantity, setQuantity] = React.useState("");
   const [bookUrl, setBookUrl] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handler = () => setVisible(true);
   const closeHandler = () => {
     setVisible(false);
     console.log("closed");
   };
-  function adicionarlivros() {
+
+  async function adicionarlivros() {
     const numero = parseInt(quantity);
     if (numero < 1 || numero > 99) {
       alert("Quantidade deve ser um número entre 1 e 99");
@@ -29,12 +33,22 @@ export default function LivroModal() {
       alert("Url da imagem da capa deve terminar com .jpg, .png ou .jpeg");
       return;
     }
-    api.addBook(title, author, summary, numero, bookUrl);
+    
+    setIsLoading(true);
+    try {
+      await api.addBook(title, author, summary, numero, bookUrl);
+      setIsLoading(false);
+      setVisible(false);
+      router.reload();
+    } catch (error) {
+      alert("Erro ao adicionar o livro");
+      setIsLoading(false);
+    }
   }
 
   return (
     <div>
-      <Button auto color="warning" shadow onPress={handler}>
+      <Button auto color="warning" shadow onPress={handler} disabled={isLoading}>
         + Livros
       </Button>
       <Modal
@@ -104,11 +118,15 @@ export default function LivroModal() {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onPress={closeHandler}>
+          <Button auto flat color="error" onPress={closeHandler} disabled={isLoading}>
             Fechar
           </Button>
-          <Button auto onPress={adicionarlivros}>
-            Adicionar
+          <Button auto onPress={adicionarlivros} disabled={isLoading}>
+            {isLoading ? (
+              <Loading type="points" color="currentColor" size="sm" />
+            ) : (
+              "Adicionar"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>

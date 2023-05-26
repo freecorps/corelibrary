@@ -5,6 +5,7 @@ import BookGrid from "../livros/books";
 import { api } from "../../pages/api/appwrite";
 
 interface Book {
+    id: string,
     title: string, 
     autor: string, 
     resume: string, 

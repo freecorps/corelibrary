@@ -1,7 +1,16 @@
 import { Modal, useModal, Button, Text } from "@nextui-org/react";
 import EditModal from "./Edit-modal";
 
-export default function CardModal() {
+interface BookCardProps {
+    id: string,
+    title: string, 
+    author: string, 
+    resume: string, 
+    quantity: number, 
+    imageUrl: string
+}
+
+export default function CardModal(props: BookCardProps) {
     const { setVisible, bindings } = useModal();
     return (
         <div>

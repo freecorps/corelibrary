@@ -3,6 +3,7 @@ import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 import CardModal from '../modal/card-modal';
 
 interface BookCardProps {
+   id: string,
    title: string, 
    author: string, 
    resume: string, 
@@ -10,7 +11,7 @@ interface BookCardProps {
    imageUrl: string
 }
 
-export const BookCard: React.FC<BookCardProps> = ({ title, author, quantity, imageUrl }) => {
+export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl }) => {
    return (
       <Card
          css={{
@@ -63,7 +64,7 @@ export const BookCard: React.FC<BookCardProps> = ({ title, author, quantity, ima
                </Col>
                <Col>
                   <Row justify="center">
-                     <CardModal />
+                     <CardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} />
                   </Row>
                </Col>
             </Row>

@@ -211,7 +211,9 @@ const users: UserType[] = [
           </Col>
         );
       case "status":
-        return <StyledBadge type={user?.status}>{cellValue}</StyledBadge>;
+        return <Row justify="flex-start" align="baseline">
+        <StyledBadge type={user?.status}>{cellValue}</StyledBadge>
+        </Row>
 
       case "actions":
         return (
@@ -252,10 +254,11 @@ const users: UserType[] = [
       aria-label="Example table with custom cells"
       css={{
         height: "auto",
-        minWidth: "100%",
-        boxShadow: 'none',
-        width: '100%',
-        px: 0,
+    minWidth: "100%",
+    overflowX: 'auto',
+    boxShadow: 'none',
+    width: '100%',
+    px: 0,
       }}
       selectionMode="multiple"
     >

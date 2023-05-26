@@ -30,7 +30,7 @@ function CheckBook(books?: Book[]) {
 
 function ShowBook(Books: Book[]) {
   return (
-    <Grid.Container gap={2} justify="center">
+    <Grid.Container gap={2}>
       {Books.map((book, index) => (
         <Grid key={index} xs={12} sm={6} md={4} lg={3}>
           <BookCard id={book.id} title={book.title} author={book.autor} quantity={book.quantity} imageUrl={book.imageUrl} resume={book.resume} />
@@ -56,8 +56,3 @@ const ShowPlaceholder = () => {
     </div>
   );
 };
-
-
-
-
-

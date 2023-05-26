@@ -17,10 +17,6 @@ switch(process.env.REACT_APP_ENV) {
     break;
 }
 
-console.log(process.env.REACT_APP_ENV);
-
-console.log(url);
-
 const linkSucess = url+"/home"
 const linkFailure = url
 
@@ -63,7 +59,7 @@ export const api = {
                 const books = response.documents.map((doc) => {
                     return {
                         resume: doc["resume"],
-                        autor: doc["autor"],
+                        autor: doc["author"],
                         title: doc["title"],
                         quantity: doc["quantity"],
                         id: doc["$id"],

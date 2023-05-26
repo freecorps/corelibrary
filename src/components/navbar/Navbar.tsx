@@ -7,12 +7,20 @@ import { NotificationsDropdown } from './notifications-dropdown';
 import { BookerDropdown } from './booker-dropdown';
 import LivroModal from '../modal/livros-modal';
 import UserModal from '../modal/users-modal';
+import { api } from "../../pages/api/appwrite";
 
 interface Props {
    children: React.ReactNode;
 }
 
 export const NavbarWrapper = ({ children }: Props) => {
+
+   const [isLibrarian, setIsLibrarian] = React.useState(false);
+
+   React.useEffect(() => {
+      api.checkIfUserIsLibrarian().then(setIsLibrarian);
+   }, []);
+   
    const collapseItems = [
       'Profile',
       'Dashboard',
@@ -97,8 +105,8 @@ export const NavbarWrapper = ({ children }: Props) => {
             </Navbar.Content>
             <Navbar.Content>
                <Navbar.Content>
-                  <LivroModal />
-                  <UserModal />
+               {  isLibrarian && <LivroModal />}
+               {  isLibrarian && <UserModal />}
                </Navbar.Content>
             </Navbar.Content>
             <Navbar.Content>

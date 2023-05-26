@@ -29,7 +29,7 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
                   New
                </Text>
-               <Text h3 color="white">
+               <Text h3 color="white" >
                   {title}
                </Text>
             </Col>
@@ -39,7 +39,7 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                src={imageUrl}
                width="100%"
                height="100%"
-               objectFit="fill"
+               objectFit="cover"
             />
          </Card.Body>
          <Card.Footer

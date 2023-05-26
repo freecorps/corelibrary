@@ -117,7 +117,6 @@ export const NavbarWrapper = ({ children }: Props) => {
                   <BookerDropdown />
                </Navbar.Content>
             </Navbar.Content>
-
             <Navbar.Collapse>
                {collapseItems.map((item, index) => (
                   <Navbar.CollapseItem

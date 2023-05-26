@@ -28,8 +28,6 @@ export const BookerDropdown = () => {
                   zoey@example.com
                </Text>
             </Dropdown.Item>
-            <Dropdown.Item key="Users">Usuarios</Dropdown.Item>
-            <Dropdown.Item key="blocked">Suspensos</Dropdown.Item>
             <Dropdown.Item key="configurations">Configurations</Dropdown.Item>
             <Dropdown.Item key="help_and_feedback" withDivider>
                Help & Feedback

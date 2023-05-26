@@ -254,11 +254,11 @@ const users: UserType[] = [
       aria-label="Example table with custom cells"
       css={{
         height: "auto",
-    minWidth: "100%",
-    overflowX: 'auto',
-    boxShadow: 'none',
-    width: '100%',
-    px: 0,
+        minWidth: "100%",
+        overflowX: 'auto',
+        boxShadow: 'none',
+        width: '100%',
+        px: 0,
       }}
       selectionMode="multiple"
     >

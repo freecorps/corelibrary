@@ -16,7 +16,7 @@ switch(process.env.NEXT_PUBLIC_REACT_APP_ENV) {
         url = 'http://localhost:3000';
     break;
 }
-
+url = "https://corelibrary.vercel.app"
 const linkSucess = url+"/home"
 const linkFailure = url
 

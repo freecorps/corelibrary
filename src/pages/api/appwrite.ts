@@ -1,4 +1,4 @@
-import { Client, Account, ID, Databases } from "appwrite";
+import { Client, Account, ID, Databases, Teams } from "appwrite";
 
 const client = new Client()
     .setEndpoint('https://api.freecorps.xyz/v1')
@@ -20,7 +20,10 @@ switch(process.env.REACT_APP_ENV) {
 const linkSucess = url+"/home"
 const linkFailure = url
 
+const teamId = "6471496a16b67e5cfb66"
+
 const database = new Databases(client);
+const teams = new Teams(client);
 
 export const api = {
 
@@ -66,7 +69,6 @@ export const api = {
                         imageUrl: doc["imageUrl"],
                     };
                 });
-                console.log(books);
                 return books;
             } else {
                 // Se não houver livros disponíveis, retorna um array vazio
@@ -81,7 +83,10 @@ export const api = {
     setUserAsLibrarian: async (): Promise<boolean> => {
         try {
           const account = new Account(client);
+          const acc = await account.get();
+          console.log(acc);
           const response = await account.updatePrefs({ isLibrarian: true });
+          const promise = teams.createMembership(teamId, [], linkSucess, acc.email);
       
           // Verifique se a resposta contém a propriedade 'isLibrarian'
           if (response.prefs && response.prefs.isLibrarian) {
@@ -137,7 +142,6 @@ export const api = {
         try {
             const account = new Account(client);
             account.createOAuth2Session('google', linkSucess, linkFailure);
-            console.log(account);
         } catch (error) {
             throw error;
         }
@@ -147,7 +151,6 @@ export const api = {
         try {
             const account = new Account(client);
             account.createOAuth2Session('github', linkSucess, linkFailure);
-            console.log(account);
         } catch (error) {
             throw error;
         }
@@ -157,7 +160,6 @@ export const api = {
         try {
             const account = new Account(client);
             account.createOAuth2Session('discord', linkSucess, linkFailure);
-            console.log(account);
         } catch (error) {
             throw error;
         }
@@ -165,13 +167,11 @@ export const api = {
 
     getCurrentUser: async () => {
         const account = new Account(client);
-        let promise = account.get();
-
-        return promise.then(function (response: { $id: any; }) {
-            return response.$id
-        }, function (error: any) {
-            console.log(error); // Failure
-        });
+        try {
+            return await account.get();
+        } catch (error) {
+            return null;
+        }
     },
 
     userLogout: async () => {

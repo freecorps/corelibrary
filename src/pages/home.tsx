@@ -7,7 +7,6 @@ import { Content } from "../components/home/content";
 
 export default function Home() {
   const router = useRouter();
-
   useEffect(() => {
     const checkUser = async () => {
       const userId = await api.getCurrentUser();
@@ -24,6 +23,7 @@ export default function Home() {
 
   return (
     <>
+    
       <NavbarWrapper>
         {/* Aqui são colocados os elementos filhos que serão renderizados pela NavbarWrapper */}
       </NavbarWrapper>

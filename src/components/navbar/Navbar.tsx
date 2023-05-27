@@ -20,7 +20,7 @@ export const NavbarWrapper = ({ children }: Props) => {
    React.useEffect(() => {
       api.checkIfUserIsLibrarian().then(setIsLibrarian);
    }, []);
-   
+
    const collapseItems = [
       'Profile',
       'Dashboard',

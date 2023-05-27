@@ -1,7 +1,16 @@
 import { Modal, useModal, Button, Text, Card } from "@nextui-org/react";
+import QRCode from 'qrcode.react';
 
+interface BookCardProps {
+  id: string,
+  title: string, 
+  author: string, 
+  resume: string, 
+  quantity: number, 
+  imageUrl: string
+}
 
-export default function QrModal() {
+export default function QrModal(book: BookCardProps) {
   const { setVisible, bindings } = useModal();
   return (
     <div>
@@ -20,10 +29,8 @@ export default function QrModal() {
             QR-Code:
           </Text>
         </Modal.Header>
-        <Modal.Body>
-          <Text id="modal-description">
-            Algo
-          </Text>
+        <Modal.Body >
+          <QRCode renderAs="svg" value={book.id} style={{minHeight: "300px", minWidth: "300px", marginLeft: "auto", marginRight: "auto"}} />
         </Modal.Body>
         </Card>
         <Modal.Footer>
@@ -33,5 +40,5 @@ export default function QrModal() {
         </Modal.Footer>
       </Modal>
     </div>
-  );
+  )
 }

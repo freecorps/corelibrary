@@ -93,8 +93,8 @@ export default function CardModal(props: BookCardProps) {
                     <Button auto flat color="error" onPress={() => setVisible(false)}>
                         Close
                     </Button>
-                    <QrModal />
-                    <EditModal />
+                        <QrModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl}/>
+                        <EditModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl} />
                 </Modal.Footer>
             </Modal>
         </div>

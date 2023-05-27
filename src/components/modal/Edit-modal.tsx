@@ -1,7 +1,16 @@
 import React from "react";
 import { Modal, Button, Text, Input, Row, Checkbox } from "@nextui-org/react";
 
-export default function EditModal() {
+interface BookCardProps {
+  id: string,
+  title: string, 
+  author: string, 
+  resume: string, 
+  quantity: number, 
+  imageUrl: string
+}
+
+export default function EditModal(prop: BookCardProps) {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
 

@@ -35,7 +35,7 @@ export default function QrModal(book: BookCardProps) {
         </Card>
         <Modal.Footer>
           <Button auto flat color="error" onPress={() => setVisible(false)}>
-            Close
+            Fechar
           </Button>
         </Modal.Footer>
       </Modal>

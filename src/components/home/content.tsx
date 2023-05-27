@@ -11,6 +11,7 @@ interface Book {
     resume: string, 
     quantity: number, 
     imageUrl: string
+    date: string
 }
 
 export const Content = () => {

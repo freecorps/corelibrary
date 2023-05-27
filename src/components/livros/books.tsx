@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from "@nextui-org/react";
+import { Grid, Spacer } from "@nextui-org/react";
 import { BookCard } from './book-card';
 import { BookPlaceholderIcon } from '../icons/books/book-placeholder-icon';
 
@@ -9,7 +9,8 @@ interface Book {
   autor: string, 
   resume: string, 
   quantity: number, 
-  imageUrl: string
+  imageUrl: string,
+  date: string
 }
 
 interface BookGridProps {
@@ -21,7 +22,7 @@ export default function BookGrid({books}: BookGridProps) {
 }
 
 function CheckBook(books?: Book[]) {
-  if (books) {
+  if (books && books.length > 0) {
     return ShowBook(books);
   } else {
     return ShowPlaceholder();
@@ -33,7 +34,7 @@ function ShowBook(Books: Book[]) {
     <Grid.Container gap={2} >
       {Books.map((book, index) => (
         <Grid key={index} xs={12} sm={6} md={4} lg={3}>
-          <BookCard id={book.id} title={book.title} author={book.autor} quantity={book.quantity} imageUrl={book.imageUrl} resume={book.resume} />
+          <BookCard id={book.id} title={book.title} author={book.autor} quantity={book.quantity} imageUrl={book.imageUrl} resume={book.resume} date={book.date}/>
         </Grid>
       ))}
     </Grid.Container>
@@ -52,6 +53,7 @@ const ShowPlaceholder = () => {
       color: 'var(--nextui-colors-foreground)'
     }}>
       <BookPlaceholderIcon width="100" height="100" />
+      <Spacer y={1.5} />
       <p>Nenhum livro no acervo, por favor, adicione para visualizar.</p>
     </div>
   );

@@ -21,44 +21,199 @@ const linkSucess = url+"/home"
 const linkFailure = url
 
 const teamId = "6471496a16b67e5cfb66"
+const BoookCollectionId = "647221b8c6ab14ed6b60"
+const BoookDatabaseId = "647221aecaa4096eb85f"
+const ReserveBookDatabaseId = "647221a5440c0935f5a6"
+const ReserveBookCollectionId = "647222636c48f479048d"
+const database = new Databases(client)
+//const teams = new Teams(client);
 
-const database = new Databases(client);
-const teams = new Teams(client);
+interface BookCardProps {
+    id: string,
+    title: string, 
+    author: string, 
+    resume: string, 
+    quantity: number, 
+    imageUrl: string,
+    date: string
+}
+interface Reservation {
+    user: string,
+    bookId: string,
+    date: string,
+}
+
+interface reservationData extends Reservation {
+    book: BookCardProps
+}
 
 export const api = {
 
+    getCurrentUser: async () => {
+        const account = new Account(client);
+        try {
+            return await account.get();
+        } catch (error) {
+            return null;
+        }
+    },
+
     addBook: async (title: string, author: string, resume: string, quantity: number, imageUrl: string): Promise<{id: string}> => {
         try {
-            // O ID da coleção onde os livros estão armazenados
-            const collectionId = "646fd1d3caab68aced07"
-            const databaseId = "646fd1c7b295932a9b1b"
-            // Fazendo a requisição para criar um novo documento (livro)
-            const response = await database.createDocument(databaseId, collectionId, ID.unique(), {
+            const response = await database.createDocument(BoookDatabaseId, BoookCollectionId, ID.unique(), {
+                title: title,
+                author: author,
+                resume: resume,
+                quantity: quantity,
+                imageUrl: imageUrl,
+                date: new Date().toISOString(),
+            });
+            return { id: response.$id };
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
+    updateBook: async (id: string, title: string, author: string, resume: string, quantity: number, imageUrl: string): Promise<{id: string}> => {
+        try {
+            const response = await database.updateDocument(BoookDatabaseId, BoookCollectionId, id, {
                 title: title,
                 author: author,
                 resume: resume,
                 quantity: quantity,
                 imageUrl: imageUrl,
             });
-            // Retornando o ID do novo livro
             return { id: response.$id };
         } catch (error) {
-            console.error(error); // Imprime o erro no console
-            throw error; // Lança o erro para ser tratado posteriormente
+            console.error(error);
+            throw error;
         }
     },
 
-    getAvailableBooks: async (): Promise<Array<{title: string, autor:string, resume:string, quantity: number, id: string, imageUrl: string}>> => {
+    deleteBook: async (id: string): Promise<boolean> => {
         try {
-            // O ID da coleção onde os livros estão armazenados
-            const collectionId = "646fd1d3caab68aced07"
-            const databaseId = "646fd1c7b295932a9b1b"
-            // Fazendo a requisição para buscar os documentos (livros)
-            const response = await database.listDocuments(databaseId, collectionId);
-            
-            // Verificando se a resposta contém documentos
+            await database.deleteDocument(BoookDatabaseId, BoookCollectionId, id);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false
+        }
+    },
+
+    reserveBook: async (id: string): Promise<boolean> => {
+        const book = await database.getDocument(BoookDatabaseId, BoookCollectionId, id);
+
+        if (book.quantity <= 0) {
+            return false;
+        }
+
+        try {
+            const user = await api.getCurrentUser();
+            const response = await database.createDocument(ReserveBookDatabaseId, ReserveBookCollectionId, ID.unique(), {
+                user: user?.$id,
+                bookId: id,
+                date: new Date().toISOString(),
+            });
+            await database.updateDocument(BoookDatabaseId, BoookCollectionId, id, {
+                quantity: book.quantity - 1,
+            });
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    },
+
+    checkIfUserHasReservedBook: async (id: string): Promise<boolean> => {
+        try {
+            const user = await api.getCurrentUser();
+            const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
+                `user=${user?.$id}`,
+                `bookId=${id}`,
+            ]);
             if (response.documents && response.documents.length > 0) {
-                // Transformando os documentos em um array de livros
+                return true;
+            }
+
+            return false;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    },
+
+    getBookById: async (id: string): Promise<BookCardProps> => {
+        try {
+            const response = await database.getDocument(BoookDatabaseId, BoookCollectionId, id);
+            return {
+                id: response.$id,
+                title: response.title,
+                resume: response.resume,
+                author: response.author,
+                quantity: response.quantity,
+                imageUrl: response.imageUrl,
+                date: response.date,
+            };
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
+    getReservedBooks: async (): Promise<Array<Reservation>> => {
+        try {
+            const user = await api.getCurrentUser();
+            const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
+                `user=${user?.$id}`,
+            ]);
+            if (response.documents && response.documents.length > 0) {
+                return response.documents.map((doc) => {
+                    return {
+                        user: doc["user"],
+                        bookId: doc["bookId"],
+                        date: doc["date"],
+                    };
+                });
+            }
+            return [];
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    },
+
+    getReservationData: async (): Promise<Array<reservationData>> => {
+        try {
+            const user = await api.getCurrentUser();
+            const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
+                `user=${user?.$id}`,
+            ]);
+            if (response.documents && response.documents.length > 0) {
+                const books = await Promise.all(
+                    response.documents.map(async (doc) => {
+                        const book = await api.getBookById(doc["bookId"]);
+                        return {
+                            user: doc["user"],
+                            bookId: doc["bookId"],
+                            date: doc["date"],
+                            book: book,
+                        };
+                    })
+                );
+                return books;
+            }
+            return [];
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    },
+
+    getAvailableBooks: async (): Promise<Array<{title: string, autor:string, resume:string, quantity: number, id: string, imageUrl: string, date: string}>> => {
+        try {
+            const response = await database.listDocuments(BoookDatabaseId, BoookCollectionId);
+            if (response.documents && response.documents.length > 0) {
                 const books = response.documents.map((doc) => {
                     return {
                         resume: doc["resume"],
@@ -67,35 +222,29 @@ export const api = {
                         quantity: doc["quantity"],
                         id: doc["$id"],
                         imageUrl: doc["imageUrl"],
+                        date: doc["date"],
                     };
                 });
                 return books;
             } else {
-                // Se não houver livros disponíveis, retorna um array vazio
                 return [];
             }
         } catch (error) {
-            console.error(error); // Imprime o erro no console
-            throw error; // Lança o erro para ser tratado posteriormente
+            console.error(error);
+            throw error;
         }
     },
 
     setUserAsLibrarian: async (): Promise<boolean> => {
         try {
           const account = new Account(client);
-          const acc = await account.get();
-          console.log(acc);
           const response = await account.updatePrefs({ isLibrarian: true });
-          const promise = teams.createMembership(teamId, [], linkSucess, acc.email);
-      
-          // Verifique se a resposta contém a propriedade 'isLibrarian'
           if (response.prefs && response.prefs.isLibrarian) {
             return true;
           }
-          // Se a resposta não contém a propriedade 'isLibrarian', retorne false
           return false;
         } catch (error) {
-          console.error(error); // Imprima o erro no console
+          console.error(error);
           return false;
         }
     },
@@ -162,15 +311,6 @@ export const api = {
             account.createOAuth2Session('discord', linkSucess, linkFailure);
         } catch (error) {
             throw error;
-        }
-    },
-
-    getCurrentUser: async () => {
-        const account = new Account(client);
-        try {
-            return await account.get();
-        } catch (error) {
-            return null;
         }
     },
 

@@ -100,7 +100,7 @@ export const NavbarWrapper = ({ children }: Props) => {
                         dflex: 'center',
                      },
                   }}
-                  placeholder="Search..."
+                  placeholder="Pesquisar..."
                />
             </Navbar.Content>
             <Navbar.Content>

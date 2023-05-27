@@ -9,15 +9,26 @@ interface BookCardProps {
    resume: string, 
    quantity: number, 
    imageUrl: string
+   date: string
 }
 
-export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl }) => {
+export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl, date }) => {
+   const [novo, setNovo] = React.useState("");
    const truncateText = (text: string, maxLength: number) => {
       if (text.length > maxLength) {
          return text.slice(0, maxLength) + '...';
       }
       return text;
    };
+
+   React.useEffect(() => {
+      const dateNow = new Date();
+      const dateBook = new Date(date);
+      const diffTime = Math.abs(dateNow.getTime() - dateBook.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays <= 2) {
+         setNovo("Novo");
+      }});
 
    return (
       <Card
@@ -33,8 +44,15 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
       >
          <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
             <Col>
-               <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
-                  New
+               <Text size={12} weight="bold" transform="uppercase" css={{
+                  color: "#127189;",
+                  backgroundImage: "-webkit-linear-gradient(45deg, #12828a 0%, #d90bba 50%);",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  letterSpacing: "0.1em",
+                  width: "20%",
+               }} >
+                  {novo}
                </Text>
                <Text h3 color="white" >
                   {title}
@@ -74,7 +92,7 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                   </Text>
                </Col>
                <Col  css={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                     <CardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} />
+                     <CardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} date={date} />
                </Col>
             </Row>
          </Card.Footer>

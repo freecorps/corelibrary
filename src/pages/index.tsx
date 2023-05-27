@@ -28,6 +28,10 @@ export default function Login() {
     }
   }
 
+  const toRegister = () => {
+    router.push('/register')
+  }
+
   useEffect(() => {
       checkUser()
   }, [])
@@ -117,7 +121,7 @@ export default function Login() {
               mb: '20px',
             }}
           >
-            Cadastro Biblioteca
+            Login Biblioteca
           </Text>
           <Input
             clearable
@@ -125,7 +129,7 @@ export default function Login() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Email/RA"
+            placeholder="Email"
             id='email'
           />
           <Spacer y={1} />
@@ -135,23 +139,17 @@ export default function Login() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Password"
+            placeholder="Senha"
             type="password"
             id='password'
             css={{ mb: '6px' }}
           />
-          <Row justify="space-between">
-            <Checkbox>
-              <Text size={14}>Lembrar conta</Text>
-            </Checkbox>
-            <Text size={14}>Esqueceu a senha?</Text>
-          </Row>
           <Spacer y={1} />
-          <Button auto>Sign in</Button>
-          <Spacer y={0.5} />
-          <Text size={14} css={{textAlign: 'center'}}>Já tem uma conta?</Text>
-          <Spacer y={0.5} />
           <Button auto onPress={handleNormalLogin}>Login</Button>
+          <Spacer y={0.5} />
+          <Text size={14} css={{textAlign: 'center'}}>Näo tem uma conta?</Text>
+          <Spacer y={0.5} />
+          <Button auto onPress={toRegister}>Faça o registro</Button>
           <Spacer y={0.5} />
           <Text size={16} css={{ textAlign: 'center', marginBottom: '1rem' }}>
             Ou entre com

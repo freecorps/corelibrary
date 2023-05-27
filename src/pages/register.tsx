@@ -27,6 +27,10 @@ export default function Register() {
     }
   }
 
+  const toLogin = () => {
+    router.push('/')
+  }
+
   useEffect(() => {
       checkUser()
   }, [])
@@ -127,7 +131,7 @@ export default function Register() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Email/RA"
+            placeholder="Email"
             id='email'
           />
           <Spacer y={0.5} />
@@ -155,6 +159,8 @@ export default function Register() {
           />
           <Spacer y={0.5} />
           <Button auto onPress={handleRegister}>Registrar</Button>
+          <Spacer y={0.5} />
+          <Button auto onPress={toLogin}>Voltar</Button>
         </Card>
       </Container>
     </div>

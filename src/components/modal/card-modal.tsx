@@ -9,6 +9,7 @@ interface BookCardProps {
     resume: string, 
     quantity: number, 
     imageUrl: string
+    date: string
 }
 
 export default function CardModal(props: BookCardProps) {
@@ -91,7 +92,7 @@ export default function CardModal(props: BookCardProps) {
 
                 <Modal.Footer>
                     <Button auto flat color="error" onPress={() => setVisible(false)}>
-                        Close
+                        Fechar
                     </Button>
                         <QrModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl}/>
                         <EditModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl} />

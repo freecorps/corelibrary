@@ -23,13 +23,7 @@ export default function Register() {
   const checkUser = async () => {
     const userId = await api.getCurrentUser();
     if (userId) {
-        // Aqui, você pode fazer uma verificação adicional para determinar se o usuário é um bibliotecário ou não
-        const isLibrarian = await api.checkIfUserIsLibrarian();
-        if (isLibrarian) {
-            router.push('/home')
-        } else {
-            router.push('/home1')
-        }
+      router.push('/home')
     }
   }
 

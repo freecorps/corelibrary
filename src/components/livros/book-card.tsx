@@ -12,6 +12,13 @@ interface BookCardProps {
 }
 
 export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl }) => {
+   const truncateText = (text: string, maxLength: number) => {
+      if (text.length > maxLength) {
+         return text.slice(0, maxLength) + '...';
+      }
+      return text;
+   };
+
    return (
       <Card
          css={{
@@ -42,7 +49,7 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                objectFit="cover"
             />
          </Card.Body>
-         <Card.Footer
+          <Card.Footer
             isBlurred
             css={{
                position: "absolute",
@@ -53,19 +60,20 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                height: "25%",
             }}
          >
-            <Row>
+            <Row align="center" css={{ height: "100%" }}>
                <Col>
-                  <Text color="#000" size={'auto'}>
-                     {title}
+                  <Text color="#000" size={'auto'} >
+                     {truncateText(title, 20)} {/* Limita o título a 20 caracteres */}
                   </Text>
-                  <Text color="#000" size={'auto'}>
-                     {author} - {quantity} unid.
+                  <Text color="#000" size={'auto'} >
+                     {truncateText(author, 20)} {/* Limita o autor a 30 caracteres */}
+                  </Text>
+                  <Text color="#000" size={'auto'} >
+                     - {quantity} unid.
                   </Text>
                </Col>
-               <Col>
-                  <Row justify="center">
+               <Col  css={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                      <CardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} />
-                  </Row>
                </Col>
             </Row>
          </Card.Footer>

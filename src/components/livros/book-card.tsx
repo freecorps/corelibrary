@@ -60,6 +60,7 @@ export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, qu
                height: "25%",
             }}
          >
+            {/*Podemos setar limite de caracteres para cada tipo de tela, futuramente*/}
             <Row align="center" css={{ height: "100%" }}>
                <Col>
                   <Text color="#000" size={'auto'} >

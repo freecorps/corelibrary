@@ -15,7 +15,31 @@ export default function CardModal(props: BookCardProps) {
     const { setVisible, bindings } = useModal();
     return (
         <div>
-            <Button auto shadow color="gradient" onPress={() => setVisible(true)}>
+            <Button auto 
+  as="a"
+  rel="noopener noreferrer"
+  target="_blank"
+  css={{ 
+    maxWidth: '$12', // space[12]
+    borderRadius: '$xs', // radii.xs
+    border: '$space$1 solid $gray400',
+    background: '$transparent', // colors.gray800
+    color: '$gray100',
+    height: '$12', // space[12]
+    boxShadow: '$md', // shadows.md
+    borderBlock: '$space$1 solid $gray400',
+    '&:hover': {
+      background: '$gray100',
+      color: '$gray800',
+    },
+    '&:active': {
+      background: '$gray200',
+    },
+    '&:focus': {
+      borderColor: '$gray400',
+    },
+  }}
+   onPress={() => setVisible(true)}>
                 + Mais
             </Button>
             <Modal  

@@ -1,5 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import { Modal, useModal, Button, Text, Card } from "@nextui-org/react";
 import QRCode from 'qrcode.react';
+import { api } from '@/pages/api/appwrite';
 
 interface BookCardProps {
   id: string,
@@ -12,9 +14,35 @@ interface BookCardProps {
 
 export default function QrModal(book: BookCardProps) {
   const { setVisible, bindings } = useModal();
+  const [isReservable, setIsReservable] = useState(false);
+
+  const checkConditions = async () => {
+    try {
+      await api.autoBlock();
+      const isBlocked = await api.chekIfUserIsBlocked();
+      const hasReserved = await api.checkIfUserHasReservedBook(book.id);
+      setIsReservable(!isBlocked && !hasReserved);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const reserv = async () => {
+    try {
+      await api.reserveBook(book.id);
+    } catch (error) {
+      alert("Não foi possível reservar o livro");
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    checkConditions();
+  }, []);
+
   return (
     <div>
-      <Button auto shadow color="secondary" onPress={() => setVisible(true)}>
+      <Button auto shadow color="secondary" onPress={() => {setVisible(true); reserv()}} disabled={!isReservable}>
         Reservar
       </Button>
       <Modal

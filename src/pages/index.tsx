@@ -33,7 +33,8 @@ export default function Login() {
   }
 
   useEffect(() => {
-      checkUser()
+    document.title = "Login";
+    checkUser()
   }, [])
 
   // Adicione funções para lidar com o login de cada provedor

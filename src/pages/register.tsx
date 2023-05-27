@@ -32,7 +32,8 @@ export default function Register() {
   }
 
   useEffect(() => {
-      checkUser()
+    document.title = "Registro";
+    checkUser()
   }, [])
 
   const handleRegister = async () => {

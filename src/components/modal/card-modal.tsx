@@ -1,6 +1,8 @@
 import { Modal, useModal, Button, Text, Card, Grid, Image } from "@nextui-org/react";
 import EditModal from "./Edit-modal";
 import QrModal from "./qr-modal";
+import { useEffect, useState } from "react";
+import { api } from "@/pages/api/appwrite";
 
 interface BookCardProps {
     id: string,
@@ -13,6 +15,21 @@ interface BookCardProps {
 }
 
 export default function CardModal(props: BookCardProps) {
+    const [isLibrarian, setIsLibrarian] = useState(false);
+
+    const checkConditions = async () => {
+        try {
+          const isUserLibrarian = await api.checkIfUserIsLibrarian();
+          setIsLibrarian(isUserLibrarian);
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        checkConditions();
+    }, []);
+
     const { setVisible, bindings } = useModal();
     return (
         <div>
@@ -95,7 +112,7 @@ export default function CardModal(props: BookCardProps) {
                         Fechar
                     </Button>
                         <QrModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl}/>
-                        <EditModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl} />
+                        {isLibrarian && <EditModal id={props.id} title={props.title} author={props.author} resume={props.resume} quantity={props.quantity} imageUrl={props.imageUrl} />}
                 </Modal.Footer>
             </Modal>
         </div>

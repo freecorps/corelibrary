@@ -1,22 +1,10 @@
-import { Client, Account, ID, Databases, Teams } from "appwrite";
+import { Client, Account, ID, Databases, Teams, Query } from "appwrite";
 
 const client = new Client()
     .setEndpoint('https://api.freecorps.xyz/v1')
     .setProject('643e97095e9289cb37d5');
 
-let url;
-switch(process.env.NEXT_PUBLIC_REACT_APP_ENV) {
-    case 'dev':
-    url = 'https://corelibrary.vercel.app';
-        break;
-    case 'prod':
-        url = 'https://corelibrary.freecorps.xyz';
-        break;
-    default:
-        url = 'http://localhost:3000';
-    break;
-}
-url = "https://corelibrary.vercel.app"
+const url = "https://corelibrary.vercel.app"
 const linkSucess = url+"/home"
 const linkFailure = url
 
@@ -47,14 +35,40 @@ interface reservationData extends Reservation {
     book: BookCardProps
 }
 
+let check = 0;
+
 export const api = {
 
     getCurrentUser: async () => {
         const account = new Account(client);
         try {
-            return await account.get();
+            const user = await account.get()
+            return user;
         } catch (error) {
             return null;
+        }
+    },
+
+    autoBlock: async () => {
+        if(check === 0) {
+        const reservedBooks = await api.getReservedBooks();
+        
+            for(let i=0; i<reservedBooks.length; i++) {
+                const reservation = reservedBooks[i];
+                
+                // check if the reservation date is more than 5 days ago
+                const reservationDate = new Date(reservation.date);
+                const currentDate = new Date();
+                const diffTime = Math.abs(currentDate.getTime() - reservationDate.getTime());
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if(diffDays > 5) {
+                    // block the user if he has a reservation more than 5 days old
+                    await api.blockUser();
+                    break;
+                }
+            }
+            check = 1;
         }
     },
 
@@ -129,9 +143,9 @@ export const api = {
         try {
             const user = await api.getCurrentUser();
             const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
-                `user=${user?.$id}`,
-                `bookId=${id}`,
+                Query.equal("user", [`${user?.$id}`]),
             ]);
+            console.log(response);
             if (response.documents && response.documents.length > 0) {
                 return true;
             }
@@ -165,7 +179,7 @@ export const api = {
         try {
             const user = await api.getCurrentUser();
             const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
-                `user=${user?.$id}`,
+                Query.equal("user", [`${user?.$id}`]),
             ]);
             if (response.documents && response.documents.length > 0) {
                 return response.documents.map((doc) => {
@@ -187,7 +201,7 @@ export const api = {
         try {
             const user = await api.getCurrentUser();
             const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
-                `user=${user?.$id}`,
+                Query.equal("user", [`${user?.$id}`]),
             ]);
             if (response.documents && response.documents.length > 0) {
                 const books = await Promise.all(
@@ -232,6 +246,48 @@ export const api = {
         } catch (error) {
             console.error(error);
             throw error;
+        }
+    },
+
+    chekIfUserIsBlocked: async (): Promise<boolean> => {
+        try {
+          const account = new Account(client);
+          const response = await account.getPrefs();
+          if (response.prefs && response.prefs.isBlocked && response.prefs.isBlocked === true) {
+            return true;
+          }
+          return false;
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+    },
+
+    blockUser: async (): Promise<boolean> => {
+        try {
+          const account = new Account(client);
+          const response = await account.updatePrefs({ isBlocked: true });
+          if (response.prefs && response.prefs.isBlocked) {
+            return true;
+          }
+          return false;
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+    },
+
+    unblockUser: async (): Promise<boolean> => {
+        try {
+          const account = new Account(client);
+          const response = await account.updatePrefs({ isBlocked: false });
+          if (response.prefs && response.prefs.isBlocked) {
+            return true;
+          }
+          return false;
+        } catch (error) {
+          console.error(error);
+          return false;
         }
     },
 

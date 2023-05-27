@@ -6,6 +6,11 @@ import { NavbarWrapper } from "../components/navbar/Navbar";
 import { Content } from "../components/home/content";
 
 export default function Home() {
+  //set tile of page
+  useEffect(() => {
+    document.title = "Home";
+  }, []);
+
   const router = useRouter();
   useEffect(() => {
     const checkUser = async () => {

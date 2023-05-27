@@ -5,7 +5,7 @@ const client = new Client()
     .setProject('643e97095e9289cb37d5');
 
 let url;
-switch(process.env.REACT_APP_ENV) {
+switch(process.env.NEXT_PUBLIC_REACT_APP_ENV) {
     case 'dev':
     url = 'https://corelibrary.vercel.app';
         break;

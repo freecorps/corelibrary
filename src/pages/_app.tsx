@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         dark: darkTheme.className,
       }}
     >
-      <NextUIProvider theme={darkTheme} >
+      <NextUIProvider >
         <Component {...pageProps} />
       </NextUIProvider>
     </NextThemesProvider>

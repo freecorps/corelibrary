@@ -49,7 +49,7 @@ const ShowPlaceholder = () => {
       alignItems: 'center',
       minHeight: '100vh',
       fontSize: '1.2rem',
-      color: 'white'
+      color: 'var(--nextui-colors-foreground)'
     }}>
       <BookPlaceholderIcon width="100" height="100" />
       <p>Nenhum livro no acervo, por favor, adicione para visualizar.</p>

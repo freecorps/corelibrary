@@ -49,7 +49,23 @@ export default function EditModal() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Resumo"
+            placeholder="Descrição"
+          />
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Quantidade"
+          />
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="URL da Imagem"
           />
         </Modal.Body>
         <Modal.Footer>

@@ -19,7 +19,6 @@ export default function UserModal() {
                boxShadow: 'none',
             },
          }}
-        scroll
         width="50%"
         closeButton
         blur

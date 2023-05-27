@@ -1,5 +1,6 @@
 import { Modal, useModal, Button, Text, Card, Grid, Image } from "@nextui-org/react";
 import EditModal from "./Edit-modal";
+import QrModal from "./qr-modal";
 
 interface BookCardProps {
     id: string,
@@ -68,6 +69,7 @@ export default function CardModal(props: BookCardProps) {
                     <Button auto flat color="error" onPress={() => setVisible(false)}>
                         Close
                     </Button>
+                    <QrModal />
                     <EditModal />
                 </Modal.Footer>
             </Modal>

@@ -27,7 +27,9 @@ export default function UserModal() {
         onClose={closeHandler}
       >
         <Modal.Header>
+        <div style={{ overflowX: 'auto', width: '100%' }}>
           <AccountTable />
+        </div>
         </Modal.Header>
         <Modal.Footer>
           <Button auto flat color="error" onPress={closeHandler}>

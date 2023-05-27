@@ -4,6 +4,9 @@ import { IconButton } from "../icons/table/icon-button";
 import { EyeIcon } from "../icons/table/eye-icon";
 import { EditIcon } from "../icons/table/edit-icon";
 import { DeleteIcon } from "../icons/table/delete-icon";
+import { Box } from "../styles/box";
+
+import { useMediaQuery } from 'react-responsive'
 
 type UserType = {
   id: string | number,
@@ -186,6 +189,20 @@ const users: UserType[] = [
         email: 'kristen.cooper@example.com',
      },
   ];
+
+  const isBigScreen = useMediaQuery({ minWidth: 1824 })
+  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 })
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
+  
+  let rowsPerPage = 8;
+  if (isTabletOrMobile) {
+    rowsPerPage = 4;
+  } else if (isDesktopOrLaptop) {
+    rowsPerPage = 6;
+  } else if (isBigScreen) {
+    rowsPerPage = 8;
+  }
+
   const renderCell = (user: any, columnKey: React.Key) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
@@ -250,7 +267,12 @@ const users: UserType[] = [
     }
   };
   return (
-    <Table
+    <Box css={{
+      '& .nextui-table-container': {
+         boxShadow: 'none',
+      },
+   }}>
+    <Table 
       aria-label="Example table with custom cells"
       css={{
         height: "auto",
@@ -286,9 +308,10 @@ const users: UserType[] = [
                shadow
                noMargin
                align="center"
-               rowsPerPage={6}
-               onPageChange={(page) => console.log({page})}
+               rowsPerPage={rowsPerPage}
+              onPageChange={(page) => console.log({page})}
             />
     </Table>
+  </Box>
   );
 }

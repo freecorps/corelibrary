@@ -1,4 +1,4 @@
-import { Modal, useModal, Button, Text } from "@nextui-org/react";
+import { Modal, useModal, Button, Text, Card } from "@nextui-org/react";
 
 
 export default function QrModal() {
@@ -14,6 +14,7 @@ export default function QrModal() {
         aria-describedby="modal-description"
         {...bindings}
       >
+        <Card>
         <Modal.Header>
           <Text id="modal-title" size={18}>
             QR-Code:
@@ -24,6 +25,7 @@ export default function QrModal() {
             Algo
           </Text>
         </Modal.Body>
+        </Card>
         <Modal.Footer>
           <Button auto flat color="error" onPress={() => setVisible(false)}>
             Close

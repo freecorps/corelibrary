@@ -15,14 +15,7 @@ export default function Home() {
         // Se o usuário não está logado, redirecioná-lo para a página de login
         router.push('/');
       } else {
-        // Se o usuário estiver logado, verificar se é um bibliotecário
-        const isLibrarian = await api.checkIfUserIsLibrarian();
-        if (!isLibrarian) {
-          // Se o usuário for um bibliotecário, redirecioná-lo para a página do bibliotecário
-          router.push('/home1');
-        } else {
-          // Se o usuário for um usuário comum, mantê-lo nesta página
-        }
+        router.push('/home');
       }
     }
   

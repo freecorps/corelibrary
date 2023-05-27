@@ -1,4 +1,4 @@
-import {Dropdown, Navbar} from '@nextui-org/react';
+import {Badge, Dropdown, Navbar} from '@nextui-org/react';
 import React from 'react';
 import {NotificationIcon} from '../icons/navbar/notificationicon';
 

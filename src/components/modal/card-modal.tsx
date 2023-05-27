@@ -22,21 +22,21 @@ export default function CardModal(props: BookCardProps) {
   css={{ 
     maxWidth: '$12', // space[12]
     borderRadius: '$xs', // radii.xs
-    border: '$space$1 solid $gray400',
+    border: '$space$1 solid #3A3F42',
     background: '$transparent', // colors.gray800
-    color: '$gray100',
+    color: '#26292B',
     height: '$12', // space[12]
     boxShadow: '$md', // shadows.md
-    borderBlock: '$space$1 solid $gray400',
+    borderBlock: '$space$1 solid #3A3F42',
     '&:hover': {
-      background: '$gray100',
-      color: '$gray800',
+      background: '#26292B',
+      color: '#9BA1A6',
     },
     '&:active': {
-      background: '$gray200',
+      background: '#2B2F31',
     },
     '&:focus': {
-      borderColor: '$gray400',
+      borderColor: '#3A3F42',
     },
   }}
    onPress={() => setVisible(true)}>

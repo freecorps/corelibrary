@@ -51,6 +51,7 @@ export default function CardModal(props: BookCardProps) {
                                         Titulo: {props.title}
                                     </Text>
                                 </Modal.Header>
+                                <Card.Divider />
                                 <Modal.Body>
                                     <Text id="modal-description" size={14}>
                                         Autor: {props.author}
@@ -62,7 +63,8 @@ export default function CardModal(props: BookCardProps) {
                                         Quantidade: {props.quantity}
                                     </Text>
                                 </Modal.Body>
-                                <Modal.Footer>
+                                <Card.Divider />
+                                <Modal.Footer justify="center">
                                     <Button auto flat color="error" onPress={() => setVisible(false)}>
                                         Close
                                     </Button>
@@ -76,5 +78,6 @@ export default function CardModal(props: BookCardProps) {
         </div>
     );
 }
+
 
 

@@ -1,16 +1,15 @@
 import { Modal, useModal, Button, Text } from "@nextui-org/react";
 import { ContentReservations } from "../home/reservation-content";
 
-export default function App() {
+export default function ReservationModal() {
   const { setVisible, bindings } = useModal();
   return (
     <div>
-      <Button auto shadow color="secondary" onPress={() => setVisible(true)}>
-        Open modal
+      <Button auto shadow color="warning" onPress={() => setVisible(true)}>
+        Reservas
       </Button>
       <Modal
-        scroll
-        width="600px"
+        width="50%"
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         {...bindings}

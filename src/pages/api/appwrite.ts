@@ -83,6 +83,30 @@ export const api = {
         }
     },
 
+    getAllUsers: async (): Promise<Array<User>> => {
+        try {
+            const response = await database.listDocuments(userDatabaseId, userCollectionId);
+            if (response.documents && response.documents.length > 0) {
+                const users = response.documents.map((doc) => {
+                    return {
+                        user: doc["user"],
+                        blocked: doc["blocked"],
+                        blockedCount: doc["blockedCount"],
+                        isLibrarian: doc["isLibrarian"],
+                        name: doc["name"],
+                        photoURL: doc["photoURL"],
+                    };
+                });
+                return users;
+            } else {
+                return [];
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
     createUser: async (user: User): Promise<boolean> => {
         try {
             const response = await database.createDocument(userDatabaseId, userCollectionId, user.user, {

@@ -230,6 +230,7 @@ export const api = {
             const response = await database.createDocument(ReserveBookDatabaseId, ReserveBookCollectionId, ID.unique(), {
                 user: user?.$id,
                 bookId: id,
+                done: false,
                 date: new Date().toISOString(),
             });
             await database.updateDocument(BoookDatabaseId, BoookCollectionId, id, {

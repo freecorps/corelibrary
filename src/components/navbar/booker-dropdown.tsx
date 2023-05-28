@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { DarkModeSwitch } from './darkmodeswitch';
 import { api } from '@/pages/api/appwrite';
 import router from 'next/router';
+import {ConfigurationModal} from '../modal/configurations-modal';
 
 interface User {
     user: string,
@@ -17,6 +18,7 @@ interface User {
 export const BookerDropdown = () => {
     const [acc, setAcc]:any = useState(null);
     const [user, setUser] = useState<User | null>(null);
+    const [configModalVisible, setConfigModalVisible] = useState(false);
 
     useEffect(() => {
         api.getUserData().then(result => {
@@ -32,8 +34,8 @@ export const BookerDropdown = () => {
     };
 
     return (
-
-        //set profile picture
+        <div>
+        <ConfigurationModal visible={configModalVisible} setVisible={setConfigModalVisible} />
         <Dropdown placement="bottom-right">
             <Navbar.Item>
                 <Dropdown.Trigger>
@@ -51,6 +53,8 @@ export const BookerDropdown = () => {
                 onAction={(actionKey) => {
                     if (actionKey === 'logout') {
                         handleLogout();
+                    }else if (actionKey === 'configurations') {
+                        setConfigModalVisible(true);
                     }
                 }}
             >
@@ -62,7 +66,7 @@ export const BookerDropdown = () => {
                         {acc?.email || 'Loading...'}
                     </Text>
                 </Dropdown.Item>
-                <Dropdown.Item key="configurations">Configurations</Dropdown.Item>
+                <Dropdown.Item key="configurations" > Configurations </Dropdown.Item>
                 <Dropdown.Item key="help_and_feedback" withDivider>
                     Help & Feedback
                 </Dropdown.Item>
@@ -74,5 +78,6 @@ export const BookerDropdown = () => {
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
+        </div>
     );
 };

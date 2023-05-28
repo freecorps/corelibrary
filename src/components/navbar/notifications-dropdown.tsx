@@ -1,4 +1,4 @@
-import {Badge, Dropdown, Navbar, Container} from '@nextui-org/react';
+import {Badge, Dropdown, Navbar, Container, Grid} from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
 import {NotificationIcon} from '../icons/navbar/notificationicon';
 import { api } from '@/pages/api/appwrite';
@@ -53,8 +53,11 @@ export const NotificationsDropdown = () => {
          <Dropdown.Trigger>
             <Navbar.Item>
                <Container>
-                  {notifications.length > 0 && <Badge size="xs" color="error">{notifications.length}</Badge>}
+                  <Grid>
+                  {notifications.length > 0 && 
+                  <Badge size="xs" color="error">{notifications.length}</Badge>}
                   <NotificationIcon />
+                  </Grid>
                </Container>
             </Navbar.Item>
          </Dropdown.Trigger>
@@ -78,7 +81,7 @@ export const NotificationsDropdown = () => {
                },
             }}
          >
-            <Dropdown.Section title="Notificacions">
+            <Dropdown.Section title="Notifications">
                {notifications.map((notification: reservationData, index: number) => (
                   <Dropdown.Item
                      key={index}

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Spacer } from "@nextui-org/react"
-import { Box } from "../styles/box"
 import BookGrid from "../livros/books";
 import { api } from "../../pages/api/appwrite";
 

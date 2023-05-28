@@ -4,10 +4,25 @@ import { DarkModeSwitch } from './darkmodeswitch';
 import { api } from '@/pages/api/appwrite';
 import router from 'next/router';
 
+interface User {
+    user: string,
+    blocked: boolean,
+    blockedCount: number,
+    isLibrarian: boolean,
+    name: string,
+    approved: boolean,
+    photoURL?: string,
+}
+
 export const BookerDropdown = () => {
     const [acc, setAcc]:any = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
+        api.getUserData().then(result => {
+            console.log(result)
+            setUser(result)
+        });
         api.getCurrentUser().then(result => setAcc(result));
     }, []);
 
@@ -17,6 +32,8 @@ export const BookerDropdown = () => {
     };
 
     return (
+
+        //set profile picture
         <Dropdown placement="bottom-right">
             <Navbar.Item>
                 <Dropdown.Trigger>
@@ -25,7 +42,7 @@ export const BookerDropdown = () => {
                         as="button"
                         color="secondary"
                         size="md"
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                        src={user?.photoURL || "https://i.pravatar.cc/150?u=a042581f4e29026704d"}
                     />
                 </Dropdown.Trigger>
             </Navbar.Item>

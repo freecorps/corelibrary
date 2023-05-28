@@ -39,6 +39,7 @@ function ShowBook(Books: Book[]) {
       ))}
     </Grid.Container>
   );
+  
 }
 
 const ShowPlaceholder = () => {

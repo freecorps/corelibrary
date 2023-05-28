@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 import CardModal from '../modal/card-modal';
+import { api } from '@/pages/api/appwrite';
 
 interface BookCardProps {
    id: string,
@@ -8,11 +9,21 @@ interface BookCardProps {
    author: string, 
    resume: string, 
    quantity: number, 
-   imageUrl: string
-   date: string
+   imageUrl: string,
+   date: string,
 }
 
-export const BookCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl, date }) => {
+interface Reservation {
+   user: string,
+   bookId: string,
+   date: string,
+}
+
+interface reservationData extends Reservation {
+   book: BookCardProps
+}
+
+export const ReservationCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl, date }) => {
    const [novo, setNovo] = React.useState("");
    const truncateText = (text: string, maxLength: number) => {
       if (text.length > maxLength) {

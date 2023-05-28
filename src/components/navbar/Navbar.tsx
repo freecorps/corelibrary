@@ -8,6 +8,7 @@ import { BookerDropdown } from './booker-dropdown';
 import LivroModal from '../modal/livros-modal';
 import UserModal from '../modal/users-modal';
 import { api } from "../../pages/api/appwrite";
+import ReservationModal from "../modal/reserva-modal";
 
 interface Props {
    children: React.ReactNode;
@@ -105,6 +106,7 @@ export const NavbarWrapper = ({ children }: Props) => {
             </Navbar.Content>
             <Navbar.Content>
                <Navbar.Content>
+               { isLibrarian && <ReservationModal />}
                {  isLibrarian && <LivroModal />}
                {  isLibrarian && <UserModal />}
                </Navbar.Content>

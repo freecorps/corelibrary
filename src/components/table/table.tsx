@@ -5,6 +5,7 @@ import { EyeIcon } from "../icons/table/eye-icon";
 import { EditIcon } from "../icons/table/edit-icon";
 import { DeleteIcon } from "../icons/table/delete-icon";
 import { Box } from "../styles/box";
+import UserEditModal from "../modal/user-edit-modal";
 
 import { useMediaQuery } from 'react-responsive'
 import React, { useEffect, useState } from "react";
@@ -119,29 +120,7 @@ export default function TableWrapper() {
   const renderActions = (user: User) => (
     <Row justify="center" align="center">
       <Col css={{ d: "flex" }}>
-        <Tooltip content="Details">
-          <IconButton onClick={() => console.log("View user", user?.$id)}>
-            <EyeIcon size={20} fill="#979797" />
-          </IconButton>
-        </Tooltip>
-      </Col>
-      <Col css={{ d: "flex" }}>
-        <Tooltip content="Edit user">
-          <IconButton onClick={() => console.log("Edit user", user?.$id)}>
-            <EditIcon size={20} fill="#979797" />
-          </IconButton>
-        </Tooltip>
-      </Col>
-      <Col css={{ d: "flex" }}>
-        <Tooltip
-          content="Delete user"
-          color="error"
-          onClick={() => console.log("Delete user", user?.$id)}
-        >
-          <IconButton>
-            <DeleteIcon size={20} fill="#FF0080" />
-          </IconButton>
-        </Tooltip>
+        <UserEditModal />
       </Col>
     </Row>
   );  

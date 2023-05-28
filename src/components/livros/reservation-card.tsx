@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Col, Row, Button, Text } from "@nextui-org/react";
-import CardModal from '../modal/card-modal';
+import ReservationcardModal from '../modal/reservationcard-modal';
 import { api } from '@/pages/api/appwrite';
 
 interface BookCardProps {
@@ -54,23 +54,6 @@ export const ReservationCard: React.FC<BookCardProps> = ({id, title, author, res
             borderRadius: '$xl',
          }}
       >
-         <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
-            <Col>
-               <Text size={12} weight="bold" transform="uppercase" css={{
-                  color: "#127189;",
-                  backgroundImage: "-webkit-linear-gradient(45deg, #12828a 0%, #d90bba 50%);",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  letterSpacing: "0.1em",
-                  width: "20%",
-               }} >
-                  {novo}
-               </Text>
-               <Text h3 color="white" >
-                  {title}
-               </Text>
-            </Col>
-         </Card.Header>
          <Card.Body css={{ p: 0 }}>
             <Card.Image
                src={imageUrl}
@@ -92,19 +75,8 @@ export const ReservationCard: React.FC<BookCardProps> = ({id, title, author, res
          >
             {/*Podemos setar limite de caracteres para cada tipo de tela, futuramente*/}
             <Row align="center" css={{ height: "100%" }}>
-               <Col>
-                  <Text color="#000" size={'auto'} >
-                     {truncateText(title, 14)} {/* Limita o título a 20 caracteres */}
-                  </Text>
-                  <Text color="#000" size={'auto'} >
-                     {truncateText(author, 14)} {/* Limita o autor a 30 caracteres */}
-                  </Text>
-                  <Text color="#000" size={'auto'} >
-                     - {quantity} unid.
-                  </Text>
-               </Col>
                <Col  css={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                     <CardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} date={date} />
+                  <ReservationcardModal id={id} title={title} author={author} resume={resume} quantity={quantity} imageUrl={imageUrl} date={date}/>
                </Col>
             </Row>
          </Card.Footer>

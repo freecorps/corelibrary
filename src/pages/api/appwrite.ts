@@ -44,6 +44,7 @@ interface User {
     blockedCount: number,
     isLibrarian: boolean,
     name: string,
+    approved: boolean,
     photoURL?: string,
 }
 
@@ -64,19 +65,28 @@ export const api = {
     getUserData: async (): Promise<User> => {
         try {
             const user = await api.getCurrentUser();
+            console.log(user);
             const userId = user?.$id;
             if (!userId) {
                 throw new Error("User not found");
             }
-            const response = await database.getDocument(userDatabaseId, userCollectionId, userId);
-            return {
-                user: response.user,
-                blocked: response.blocked,
-                blockedCount: response.blockedCount,
-                isLibrarian: response.isLibrarian,
-                name: response.name,
-                photoURL: response.photoURL,
-            };
+            const response = await database.listDocuments(userDatabaseId, userCollectionId, [
+                Query.equal("user", [`${user?.$id}`]),
+            ]);
+            console.log(response);
+            if (response.documents && response.documents.length > 0) {
+                return {
+                    user: response.documents[0]["user"],
+                    blocked: response.documents[0]["blocked"],
+                    blockedCount: response.documents[0]["blockedCount"],
+                    isLibrarian: response.documents[0]["isLibrarian"],
+                    name: response.documents[0]["name"],
+                    approved: response.documents[0]["approved"],
+                    photoURL: response.documents[0]["photoURL"],
+                };
+            } else {
+                throw new Error("User not found");
+            }
         } catch (error) {
             console.error(error);
             throw error;
@@ -94,6 +104,7 @@ export const api = {
                         blockedCount: doc["blockedCount"],
                         isLibrarian: doc["isLibrarian"],
                         name: doc["name"],
+                        approved: doc["approved"],
                         photoURL: doc["photoURL"],
                     };
                 });
@@ -114,6 +125,7 @@ export const api = {
                 blockedCount: user.blockedCount,
                 isLibrarian: user.isLibrarian,
                 name: user.name,
+                approved: user.approved,
                 photoURL: user.photoURL,
             });
             return true;
@@ -128,6 +140,7 @@ export const api = {
             const response = await database.updateDocument(userDatabaseId, userCollectionId, user.user, {
                 blocked: user.blocked,
                 blockedCount: user.blockedCount,
+                approved: user.approved,
                 isLibrarian: user.isLibrarian,
                 name: user.name,
                 photoURL: user.photoURL,

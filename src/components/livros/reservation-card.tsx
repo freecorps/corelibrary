@@ -24,6 +24,7 @@ interface reservationData extends Reservation {
 }
 
 export const ReservationCard: React.FC<BookCardProps> = ({id, title, author, resume, quantity, imageUrl, date }) => {
+   const [reservations, setReservations] = React.useState<reservationData[]>([]);
    const [novo, setNovo] = React.useState("");
    const truncateText = (text: string, maxLength: number) => {
       if (text.length > maxLength) {
@@ -33,13 +34,13 @@ export const ReservationCard: React.FC<BookCardProps> = ({id, title, author, res
    };
 
    React.useEffect(() => {
-      const dateNow = new Date();
-      const dateBook = new Date(date);
-      const diffTime = Math.abs(dateNow.getTime() - dateBook.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      if (diffDays <= 2) {
-         setNovo("Novo");
-      }});
+      const fetchReservations = async () => {
+         const data = await api.getReservationData();
+         //set setReservations
+         setReservations(data);
+      };
+      fetchReservations();
+   }, []);
 
    return (
       <Card

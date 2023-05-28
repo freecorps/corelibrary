@@ -28,7 +28,8 @@ export default function LivroModal() {
     if (
       !bookUrl.endsWith(".jpg") &&
       !bookUrl.endsWith(".png") &&
-      !bookUrl.endsWith(".jpeg")
+      !bookUrl.endsWith(".jpeg") &&
+      !bookUrl.endsWith(".gif")
     ) {
       alert("Url da imagem da capa deve terminar com .jpg, .png ou .jpeg");
       return;

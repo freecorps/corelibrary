@@ -44,7 +44,8 @@ export default function EditModal(prop: BookCardProps) {
     if (
       !imageUrl.value.endsWith(".jpg") &&
       !imageUrl.value.endsWith(".png") &&
-      !imageUrl.value.endsWith(".jpeg")
+      !imageUrl.value.endsWith(".jpeg") &&
+      !imageUrl.value.endsWith(".gif")
     ) {
       alert("Url da imagem da capa deve terminar com .jpg, .png ou .jpeg");
       return;

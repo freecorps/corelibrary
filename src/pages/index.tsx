@@ -22,10 +22,13 @@ export default function Login() {
   const router = useRouter()
 
   const checkUser = async () => {
-    const userId = await api.getCurrentUser();
+    try {
+      const userId = await api.getCurrentUser();
     if (userId) {
-        router.push('/home')
+      router.push('/home')
     }
+    } catch (error) {
+    } 
   }
 
   const toRegister = () => {

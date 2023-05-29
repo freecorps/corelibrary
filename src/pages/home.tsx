@@ -19,6 +19,25 @@ export default function Home() {
         // Se o usuário não está logado, redirecioná-lo para a página de login
         router.push('/');
       } else {
+        const userData = await api.getUserData();
+        if(!userData) {
+          api.createUser({
+            user: userId.$id,
+            blocked: false,
+            blockedCount: 0,
+            isLibrarian: false,
+            name: userId.name,
+            approved: false
+          })
+          router.push('/home');
+          return
+        }
+        if (!userData.approved) {
+          // Se o usuário não está aprovado, alerta-lo, destruir a sessão e redirecioná-lo para a página de login
+          alert('Usuário não aprovado');
+          await api.userLogout();
+          router.push('/');
+        }
         router.push('/home');
       }
     }

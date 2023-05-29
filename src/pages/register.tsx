@@ -72,7 +72,7 @@ export default function Register() {
       }
       const response = await api.normalRegister(email, password);
       if (response) {
-        // Registro bem-sucedido, redirecione o usuário
+        alert('Registro bem-sucedido no sistema, por favor, confirme seu email para acessar');
         checkUser();
       }
     }

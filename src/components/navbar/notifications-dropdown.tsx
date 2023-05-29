@@ -53,11 +53,25 @@ export const NotificationsDropdown = () => {
          <Dropdown.Trigger>
             <Navbar.Item>
                <Container>
-                  <Grid>
-                  {notifications.length > 0 && 
-                  <Badge size="xs" color="error">{notifications.length}</Badge>}
-                  <NotificationIcon />
-                  </Grid>
+               <Grid>
+                  <div style={{position: 'relative'}}>
+                     <NotificationIcon />
+                     {notifications.length > 0 && 
+                        <Badge 
+                           size="xs" 
+                           color="error" 
+                           style={{
+                              position: 'absolute', 
+                              right: 0, 
+                              bottom: 7,
+
+                           }}
+                        >
+                           {notifications.length}
+                        </Badge>
+                     }
+                  </div>
+               </Grid>
                </Container>
             </Navbar.Item>
          </Dropdown.Trigger>

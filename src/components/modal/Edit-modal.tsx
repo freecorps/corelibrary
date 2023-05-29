@@ -121,7 +121,7 @@ export default function EditModal(prop: BookCardProps) {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Descrição"
+            placeholder="Sinopse"
           />
           <Input
             id="quantity"

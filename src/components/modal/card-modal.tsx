@@ -97,7 +97,7 @@ export default function CardModal(props: BookCardProps) {
                                     Autor: {props.author}
                                 </Text> 
                                 <Text id="modal-description" size={14}>
-                                    Descricao: {props.resume}
+                                    Sinopse: {props.resume}
                                 </Text>
                                 <Text id="modal-description" size={14}>
                                     Quantidade: {props.quantity}

@@ -1,5 +1,8 @@
 import { api } from './api/appwrite'
 
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
 import React from 'react';
 import {
   Card,
@@ -15,6 +18,28 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 export default function Login() {
+
+  const router = useRouter()
+
+  const checkUser = async () => {
+    try {
+      const userId = await api.getCurrentUser();
+    if (userId) {
+      router.push('/home')
+    }
+    } catch (error) {
+    } 
+  }
+
+  const toRegister = () => {
+    router.push('/register')
+  }
+
+  useEffect(() => {
+    document.title = "Login";
+    checkUser()
+  }, [])
+
   // Adicione funções para lidar com o login de cada provedor
   const handleGoogleLogin = async () => {
     // Lógica de login com o Google
@@ -46,7 +71,11 @@ export default function Login() {
   const handleNormalLogin = async () => {
     const email = (document.getElementById('email') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-    await api.normalLogin(email, password);
+    const response = await api.normalLogin(email, password);
+    if (response) {
+      // Login bem-sucedido, redirecione o usuário
+      checkUser();
+    }
   }
 
   return (
@@ -96,7 +125,7 @@ export default function Login() {
               mb: '20px',
             }}
           >
-            Cadastro Biblioteca
+            Login Biblioteca
           </Text>
           <Input
             clearable
@@ -104,7 +133,7 @@ export default function Login() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Email/RA"
+            placeholder="Email"
             id='email'
           />
           <Spacer y={1} />
@@ -114,23 +143,17 @@ export default function Login() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Password"
+            placeholder="Senha"
             type="password"
             id='password'
             css={{ mb: '6px' }}
           />
-          <Row justify="space-between">
-            <Checkbox>
-              <Text size={14}>Lembrar conta</Text>
-            </Checkbox>
-            <Text size={14}>Esqueceu a senha?</Text>
-          </Row>
           <Spacer y={1} />
-          <Button auto>Sign in</Button>
-          <Spacer y={0.5} />
-          <Text size={14} css={{textAlign: 'center'}}>Já tem uma conta?</Text>
-          <Spacer y={0.5} />
           <Button auto onPress={handleNormalLogin}>Login</Button>
+          <Spacer y={0.5} />
+          <Text size={14} css={{textAlign: 'center'}}>Näo tem uma conta?</Text>
+          <Spacer y={0.5} />
+          <Button auto onPress={toRegister}>Faça o registro</Button>
           <Spacer y={0.5} />
           <Text size={16} css={{ textAlign: 'center', marginBottom: '1rem' }}>
             Ou entre com

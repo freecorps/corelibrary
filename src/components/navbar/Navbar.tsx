@@ -106,7 +106,7 @@ export const NavbarWrapper = ({ children }: Props) => {
             </Navbar.Content>
             <Navbar.Content>
                <Navbar.Content>
-               { isLibrarian && <ReservationModal />}
+               <ReservationModal />
                {  isLibrarian && <LivroModal />}
                {  isLibrarian && <UserModal />}
                </Navbar.Content>

@@ -4,7 +4,7 @@ const client = new Client()
     .setEndpoint('https://api.freecorps.xyz/v1')
     .setProject('643e97095e9289cb37d5')
 
-const url = "https://corelibrary.vercel.app"
+const url = "https://corelibrary.freecorps.xyz/"
 const linkSucess = url+"/home"
 const linkFailure = url
 

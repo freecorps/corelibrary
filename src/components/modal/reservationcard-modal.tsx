@@ -12,13 +12,30 @@ interface BookCardProps {
     date: string
 }
 
+interface Reservation {
+    user: string,
+    bookId: string,
+    date: string,
+    done: boolean,
+}
+
 export default function ReservationcardModal(props: BookCardProps) {
     const [isLibrarian, setIsLibrarian] = useState(false);
+    const [reservation, setReservation] = useState<Reservation>();
+    let date = new Date(props.date)  
+
+    date.setDate(date.getDate() + 5);
+
+    let cleber = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 
     const checkConditions = async () => {
         try {
           const isUserLibrarian = await api.checkIfUserIsLibrarian();
           setIsLibrarian(isUserLibrarian);
+            const reservationData = await api.checkIfUserHasReservedBook(props.id);
+            if (reservationData) {
+                setReservation(reservationData);
+            }
         } catch (error) {
           console.error(error);
         }
@@ -98,7 +115,7 @@ export default function ReservationcardModal(props: BookCardProps) {
                                     Descricao: {props.resume}
                                 </Text>
                                 <Text id="modal-description" size={14}>
-                                    Quantidade: {props.quantity}
+                                    Data máxima de devolução: {cleber}
                                 </Text>
                             </Modal.Body>
                         </Card>

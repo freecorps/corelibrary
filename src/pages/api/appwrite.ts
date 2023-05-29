@@ -343,20 +343,28 @@ export const api = {
         }
     },
 
-    checkIfUserHasReservedBook: async (id: string): Promise<boolean> => {
+    checkIfUserHasReservedBook: async (id: string): Promise<Reservation|null> => {
         try {
             const user = await api.getCurrentUser();
             const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
                 Query.equal("user", [`${user?.$id}`]),
             ]);
             if (response.documents && response.documents.length > 0) {
-                return true;
+                const book = response.documents.find((doc) => doc["bookId"] === id);
+                if (book) {
+                    return {
+                        user: book["user"],
+                        bookId: book["bookId"],
+                        date: book["date"],
+                        done: book["done"],
+                    };
+                }
             }
 
-            return false;
+            return null
         } catch (error) {
             console.error(error);
-            return false;
+            return null
         }
     },
 

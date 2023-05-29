@@ -6,6 +6,7 @@ import router from 'next/router';
 import {ConfigurationModal} from '../modal/configurations-modal';
 
 interface User {
+    id: string,
     user: string,
     blocked: boolean,
     blockedCount: number,
@@ -34,7 +35,7 @@ export const BookerDropdown = () => {
 
     return (
         <div>
-        <ConfigurationModal visible={configModalVisible} setVisible={setConfigModalVisible} />
+        <ConfigurationModal visible={configModalVisible} setVisible={setConfigModalVisible} link={user?.photoURL} id={user?.id} />
         <Dropdown placement="bottom-right">
             <Navbar.Item>
                 <Dropdown.Trigger>

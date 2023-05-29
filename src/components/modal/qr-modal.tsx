@@ -21,7 +21,15 @@ export default function QrModal(book: BookCardProps) {
       await api.autoBlock();
       const isBlocked = await api.chekIfUserIsBlocked();
       const hasReserved = await api.checkIfUserHasReservedBook(book.id);
-      setIsReservable(!isBlocked && !hasReserved);
+      //check if user has 3 reservations
+      const reservations = await api.getReservedBooks()
+      if (reservations.length >= 3) {
+        setIsReservable(false);
+        return;
+      }
+      if (isBlocked || hasReserved) {
+        setIsReservable(false);
+      }
     } catch (error) {
       console.error(error);
     }

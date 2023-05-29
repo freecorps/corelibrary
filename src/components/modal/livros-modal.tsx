@@ -91,7 +91,7 @@ export default function LivroModal() {
             fullWidth
             color="primary"
             size="lg"
-            placeholder="Resumo"
+            placeholder="Sinopse"
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
           />

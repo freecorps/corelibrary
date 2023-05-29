@@ -34,11 +34,22 @@ interface Reservation {
     done: boolean,
 }
 
+interface UserCadastro {
+    user: string,
+    blocked: boolean,
+    blockedCount: number,
+    isLibrarian: boolean,
+    name: string,
+    approved: boolean,
+    photoURL?: string,
+}
+
 interface reservationData extends Reservation {
     book: BookCardProps
 }
 
 interface User {
+    id: string,
     user: string,
     blocked: boolean,
     blockedCount: number,
@@ -62,20 +73,45 @@ export const api = {
         }
     },
 
-    getUserData: async (): Promise<User> => {
+    getUserData: async (): Promise<User|null> => {
         try {
             const user = await api.getCurrentUser();
-            console.log(user);
             const userId = user?.$id;
             if (!userId) {
-                throw new Error("User not found");
+                return null
             }
             const response = await database.listDocuments(userDatabaseId, userCollectionId, [
                 Query.equal("user", [`${user?.$id}`]),
             ]);
-            console.log(response);
+
             if (response.documents && response.documents.length > 0) {
                 return {
+                    id: response.documents[0]["$id"],
+                    user: response.documents[0]["user"],
+                    blocked: response.documents[0]["blocked"],
+                    blockedCount: response.documents[0]["blockedCount"],
+                    isLibrarian: response.documents[0]["isLibrarian"],
+                    name: response.documents[0]["name"],
+                    approved: response.documents[0]["approved"],
+                    photoURL: response.documents[0]["photoURL"],
+                };
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    },
+
+    getUserById: async (id: string): Promise<User> => {
+        try {
+            const response = await database.listDocuments(userDatabaseId, userCollectionId, [
+                Query.equal("user", [`${id}`]),
+            ]);
+            if (response.documents && response.documents.length > 0) {
+                return {
+                    id: response.documents[0]["$id"],
                     user: response.documents[0]["user"],
                     blocked: response.documents[0]["blocked"],
                     blockedCount: response.documents[0]["blockedCount"],
@@ -99,6 +135,7 @@ export const api = {
             if (response.documents && response.documents.length > 0) {
                 const users = response.documents.map((doc) => {
                     return {
+                        id: doc["$id"],
                         user: doc["user"],
                         blocked: doc["blocked"],
                         blockedCount: doc["blockedCount"],
@@ -118,9 +155,27 @@ export const api = {
         }
     },
 
-    createUser: async (user: User): Promise<boolean> => {
+    createUser: async (user: UserCadastro): Promise<boolean> => {
         try {
-            const response = await database.createDocument(userDatabaseId, userCollectionId, user.user, {
+            const response = await database.createDocument(userDatabaseId, userCollectionId, ID.unique(), {
+                user: user.user,
+                blocked: user.blocked,
+                blockedCount: user.blockedCount,
+                isLibrarian: user.isLibrarian,
+                name: user.name,
+                approved: user.approved,
+                photoURL: user.photoURL,
+            });
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    },
+
+    setUserbyId: async (user: User): Promise<boolean> => {
+        try {
+            const response = await database.updateDocument(userDatabaseId, userCollectionId, user.user, {
                 blocked: user.blocked,
                 blockedCount: user.blockedCount,
                 isLibrarian: user.isLibrarian,
@@ -152,10 +207,34 @@ export const api = {
         }
     },
 
-    setProfilePicture: async (url: string): Promise<boolean> => {
+    suspendUser: async (id: string): Promise<boolean> => {
         try {
             const data = await api.getUserData();
-            const response = await database.updateDocument(userDatabaseId, userCollectionId, data.user, {
+            const response = await database.updateDocument(userDatabaseId, userCollectionId, id, {
+                approved: false,
+            });
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    },
+
+    removeUser: async (id: string): Promise<boolean> => {
+        try {
+            const data = await api.getUserData();
+            const response = await database.deleteDocument(userDatabaseId, userCollectionId, id);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    },
+
+    setProfilePicture: async (id:string, url: string): Promise<boolean> => {
+        try {
+            const data = await api.getUserData();
+            const response = await database.updateDocument(userDatabaseId, userCollectionId, id, {
                 photoURL: url,
             });
             return true;
@@ -180,8 +259,16 @@ export const api = {
                 
                 if(diffDays > 5) {
                     // block the user if he has a reservation more than 5 days old
-                    await api.blockUser();
-                    break;
+                    const user = await api.getUserById(reservation.user);
+                    if (user.blocked) {
+                        break
+                    }
+                    const data = await api.getUserData()
+                    if (data) {
+                        await api.blockUser(user.id, data.id);
+                        break;
+                    }
+                    return
                 }
             }
             check = 1;
@@ -262,7 +349,6 @@ export const api = {
             const response = await database.listDocuments(ReserveBookDatabaseId, ReserveBookCollectionId, [
                 Query.equal("user", [`${user?.$id}`]),
             ]);
-            console.log(response);
             if (response.documents && response.documents.length > 0) {
                 return true;
             }
@@ -382,7 +468,10 @@ export const api = {
 
     chekIfUserIsBlocked: async (): Promise<boolean> => {
         try {
-            const data = await api.getUserData();
+            const data = await api.getUserData()
+            if (!data) {
+                return false
+            }
             return data.blocked;    
         } catch (error) {
           console.error(error);
@@ -390,10 +479,10 @@ export const api = {
         }
     },
 
-    blockUser: async (): Promise<boolean> => {
+    blockUser: async (user: string, docId: string): Promise<boolean> => {
         try {
-            const data = await api.getUserData();
-                const response = await database.updateDocument(userDatabaseId, userCollectionId, data.user, {
+            const data = await api.getUserById(user);
+                const response = await database.updateDocument(userDatabaseId, userCollectionId, docId, {
                     blocked: true,
                     blockedCount: data.blockedCount + 1,
                 }
@@ -405,10 +494,10 @@ export const api = {
         }
     },
 
-    unblockUser: async (): Promise<boolean> => {
+    unblockUser: async (id: string): Promise<boolean> => {
         try {
           const data = await api.getUserData();
-            const response = await database.updateDocument(userDatabaseId, userCollectionId, data.user, {
+            const response = await database.updateDocument(userDatabaseId, userCollectionId, id, {
                 blocked: false
             }
             );
@@ -419,9 +508,33 @@ export const api = {
         }
     },
 
-    setUserAsLibrarian: async (): Promise<boolean> => {
+    approvUser: async (id: string): Promise<boolean> => {
         try {
             const data = await api.getUserData();
+              const response = await database.updateDocument(userDatabaseId, userCollectionId, id, {
+                approved: true
+              }
+              );
+            return true;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+    },
+
+    setUserAsLibrarian: async (user?: string): Promise<boolean> => {
+        try {
+            const data = await api.getUserData()
+            if (!data) {
+                return false
+            }
+            if (user) {
+                const response = await database.updateDocument(userDatabaseId, userCollectionId, user, {
+                    isLibrarian: true
+                }
+                );
+                return true;
+            }
             const response = await database.updateDocument(userDatabaseId, userCollectionId, data.user, {
                 isLibrarian: true
             }
@@ -434,7 +547,10 @@ export const api = {
       
     checkIfUserIsLibrarian: async (): Promise<boolean> => {
         try {
-            const data = await api.getUserData();
+            const data = await api.getUserData()
+            if (!data) {
+                return false
+            }
             return data.isLibrarian;
         } catch (error) {
           throw error;

@@ -22,7 +22,6 @@ export const BookerDropdown = () => {
 
     useEffect(() => {
         api.getUserData().then(result => {
-            console.log(result)
             setUser(result)
         });
         api.getCurrentUser().then(result => setAcc(result));

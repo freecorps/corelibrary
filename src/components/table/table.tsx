@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/pages/api/appwrite";
 
 interface UserAPI {
+  id: string,
   user: string,
   blocked: boolean,
   blockedCount: number,
@@ -41,7 +42,7 @@ export default function TableWrapper() {
       setUsers(
         data.map((user: UserAPI) => ({
           key: user.user,
-          $id: user.user,
+          $id: user.id,
           name: user.name,
           email: user.user,
           isLibrarian: user.isLibrarian,
@@ -56,9 +57,9 @@ export default function TableWrapper() {
   }, []);  
 
   const columns = [
-    { name: "NAME", uid: "name" },
-    { name: "ROLE", uid: "role" },
-    { name: "STATUS", uid: "status" },
+    { name: "Nome", uid: "name" },
+    { name: "Cargo", uid: "role" },
+    { name: "Staus", uid: "status" },
     { name: "ACTIONS", uid: "actions" },
   ];
 
@@ -89,15 +90,15 @@ export default function TableWrapper() {
       case "name":
         return <Text>{cellValue}</Text>;
       case "role":
-        return <Text>{user.isLibrarian ? "Librarian" : "User"}</Text>;
+        return <Text>{user.isLibrarian ? "Bibliotecario" : "Usuario"}</Text>;
       case "status":
         let status = "Normal";
         let statusColor = "success";
         if (user.blocked) {
-          status = "Blocked";
+          status = "Bloqueado";
           statusColor = "error";
         } else if (!user.approved) {
-          status = "Not Approved";
+          status = "Não aprovado";
           statusColor = "warning";
         }
         return <Badge color={"success"}>{status}</Badge>;
@@ -120,7 +121,16 @@ export default function TableWrapper() {
   const renderActions = (user: User) => (
     <Row justify="center" align="center">
       <Col css={{ d: "flex" }}>
-        <UserEditModal />
+        <UserEditModal usuario={{
+          id: user.$id,
+          user: user.email,
+          blocked: user.blocked,
+          blockedCount: user.blockedCount,
+          isLibrarian: user.isLibrarian,
+          name: user.name,
+          approved: user.approved,
+          photoURL: user.avatar
+        }} />
       </Col>
     </Row>
   );  
